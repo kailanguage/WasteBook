@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">WasteBook</string>
+    <string name="title_detail">明细</string>
+    <string name="title_chart">图表</string>
+    <string name="title_person">我的</string>
+
+    <string name="nav_detail">明细</string>
+    <string name="nav_add">Add</string>
+    <string name="nav_chart">图表</string>
+    <string name="nav_person">我的</string>
+
+
+    <string name="cancel">取消</string>
+    <string name="confirm">确定</string>
+
+    <string name="num_0">0</string>
+    <string name="num_1">1</string>
+    <string name="num_2">2</string>
+    <string name="num_3">3</string>
+    <string name="num_4">4</string>
+    <string name="num_5">5</string>
+    <string name="num_6">6</string>
+    <string name="num_7">7</string>
+    <string name="num_8">8</string>
+    <string name="num_9">9</string>
+    <string name="num_clean_to_0">清零</string>
+    <string name="symbol_dot">.</string>
+    <string name="ok">确定</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+
+
+    <string name="tab_text_1">支出</string>
+    <string name="tab_text_2">收入</string>
+
+
+    <!-- toolbar title of tall expense record add activity -->
+    <string name="tally_add_record">记一笔&#8230;</string>
+    <string name="tally_calendar_title_format" formatted="false">%d年%d月</string>
+    <string name="tally_expense_note">备注</string>
+    <string name="tally_add_record_note">添加备注</string>
+    <string name="tally_check_month_expense">查看月账单</string>
+    <string name="tally_current_month_expense_amount">本月支出</string>
+    <string name="tally_current_month_income_amount">本月收入</string>
+    <string name="todo">TODO</string>
+
+
+    <!--消费记录详情-->
+    <string name="tally_time">时间</string>
+
+    <string name="edit_category">编辑分类</string>
+    <string name="add_category">添加分类</string>
+    <string name="expense_category">支出</string>
+    <string name="income_category">收入</string>
+    <string name="save">保存</string>
+    <string name="setting">设置</string>
+    <string name="hour">时</string>
+    <string name="minute">分</string>
+    <string name="dialog_data_pick_time_input_label">请输入时间（24小时制）</string>
+    <string name="date_format_y_m_d">yyyy年MM月dd日</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

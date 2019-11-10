@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFC107</color>
+    <color name="colorPrimaryDark">#FF9800</color>
+    <color name="colorAccent">#D81B60</color>
+
+
+    <attr format="color" name="colorOnPrimary"/>
+
+
+    <color name="white">#ffffffff</color>
+    <color name="black">#ff000000</color>
+    <color name="black_alpha_03">#08000000</color>
+    <color name="grey">#ffaaaaaa</color>
+    <color name="transparent">#00000000</color>
+    <color name="background">#f5f5f9</color>
+    <color name="grey_icon">#afafaf</color>
+    <color name="colorAction">#737373</color>
+    <color name="shadow_start_color">#11000000</color>
+    <color name="shadow_start_color_medium">#11000000</color>
+    <!-- 点击涟漪背景色 -->
+    <color name="color_ripple">#1f000000</color>
+    <color name="warning">#E53935</color>
+
+    <color name="appTextColorPrimary">#ff3e3e3e</color>
+    <color name="appTextColorSecondary">#ff666666</color>
+    <color name="appTextColorThird">#ff9b9b9b</color>
+    <color name="appTextColorLabel">@color/colorHint</color>
+
+    <color name="appBgBtnPressed">#008560</color>
+    <color name="appBgBtnDisabled">#99aaaaaa</color>
+
+    <color name="appBgIconBtnNormal">@color/transparent</color>
+    <color name="appBgIconBtnPressed">#ebebeb</color>
+
+    <color name="appBgBtnMonthSelectorStateNormal">@color/black_alpha_03</color>
+    <color name="appBgBtnMonthSelectorStateSelected">#0F956F</color>
+    <color name="appBgBtnMonthSelectorStateDisabled">@color/appBgBtnDisabled</color>
+
+    <color name="appBgTagStyle1StateNormal">#190F956F</color>
+    <color name="appBgTagStyle1StateSelected">@color/colorAccent</color>
+
+    <color name="divider">#dcdcdc</color>
+    <color name="colorHint">#66000000</color>
+
+    <color name="categoryColor1">#ff8a80</color>
+    <color name="categoryColor2">#ffd180</color>
+    <color name="categoryColor3">#ffff8d</color>
+    <color name="categoryColor4">#ccff90</color>
+
+    <color name="categoryExpenseColor1">#E65100</color>
+    <color name="categoryExpenseColor2">#EF6C00</color>
+    <color name="categoryExpenseColor3">#F57C00</color>
+    <color name="categoryExpenseColor4">#FB8C00</color>
+    <color name="categoryExpenseColor5">#FF9800</color>
+    <color name="categoryExpenseColor6">#FFA726</color>
+    <color name="categoryExpenseColor7">#FFB74D</color>
+    <color name="categoryExpenseColor8">#FFCC80</color>
+    <color name="categoryExpenseColor9">#FFE0B2</color>
+
+    <color name="categoryIncomeColor1">#1B5E20</color>
+    <color name="categoryIncomeColor2">#2E7D32</color>
+    <color name="categoryIncomeColor3">#388E3C</color>
+    <color name="categoryIncomeColor4">#43A047</color>
+    <color name="categoryIncomeColor5">#4CAF50</color>
+    <color name="categoryIncomeColor6">#66BB6A</color>
+    <color name="categoryIncomeColor7">#81C784</color>
+    <color name="categoryIncomeColor8">#A5D6A7</color>
+    <color name="categoryIncomeColor9">#C8E6C9</color>
+
+    <color name="chartGridLine">#efefef</color>
+
+    <color name="expenseColor">#f2615e</color>
+    <color name="incomeColor">#60b9ff</color>
+
+    <color name="icCategoryIncomeNormal">#3f000000</color>
+    <color name="icCategoryIncomeSelected">#ffffff</color>
+    <color name="bgCategoryIncomeNormal">#08000000</color>
+    <color name="bgCategoryIncomeSelected">@color/incomeColor</color>
+
+    <color name="icCategoryExpenseNormal">#3f000000</color>
+    <color name="icCategoryExpenseSelected">#ffffff</color>
+    <color name="bgCategoryExpenseNormal">#08000000</color>
+    <color name="bgCategoryExpenseSelected">@color/expenseColor</color>
+</resources>
