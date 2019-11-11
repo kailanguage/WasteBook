@@ -1,10 +1,15 @@
 package com.kailang.wastebook.ui.category;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
+
 import com.google.android.material.tabs.TabLayout;
 import com.kailang.wastebook.R;
+import com.kailang.wastebook.ui.add.AddFragment;
 
 public class CategoryActivity extends AppCompatActivity {
 
@@ -12,7 +17,13 @@ public class CategoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
-        PagerAdapter sectionsPagerAdapter = new PagerAdapter(this, getSupportFragmentManager());
+        FragmentManager fragmentManager =getSupportFragmentManager();
+        int a=fragmentManager.getFragments().size();
+        fragmentManager.beginTransaction()
+                .add(R.id.coordinatorlayout_category,CategoryFragment.newInstance(3))
+                .show(CategoryFragment.newInstance(3))
+        .commit();
+        PagerAdapter sectionsPagerAdapter = new PagerAdapter(this,fragmentManager);
         ViewPager viewPager = findViewById(R.id.view_pager_category);
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = findViewById(R.id.tabs_category);

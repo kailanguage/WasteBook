@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ import java.util.List;
 public class CategoryFragment extends Fragment {
 
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final String ARG_SECTION_NUMBER = "category";
 
     private CategoryViewModel categoryViewModel;
 
@@ -62,6 +63,7 @@ public class CategoryFragment extends Fragment {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
         categoryViewModel.setIndex(index);
+       initCategory();
     }
 
     @Override
@@ -69,6 +71,14 @@ public class CategoryFragment extends Fragment {
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_category, container, false);
+        allCategoriesLive=categoryViewModel.getAllCategoriesLive();
+        allCategoriesLive.observe(getViewLifecycleOwner(), new Observer<List<Category>>() {
+            @Override
+            public void onChanged(List<Category> categories) {
+                allCategories=categories;
+            }
+        });
+
         categoryViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
@@ -85,6 +95,12 @@ public class CategoryFragment extends Fragment {
                     for (int i = 0; i < 20; i++) {
                         list.add(i + "xxx");
                     }
+//                    if(allCategories!=null)
+//                    for(Category c:allCategories){
+//                        if(c.isType()){
+//                            list.add(c.getName());
+//                        }
+//                    }
                     adapter.notifyDataSetChanged(list);
 
                     // 设置菜单创建器。
@@ -142,8 +158,7 @@ public class CategoryFragment extends Fragment {
                             list.remove(position);
                             adapter.notifyItemRemoved(position);
                             //Toast.makeText(CategoryActivity.this, "现在的第" + position + "条被删除。", Toast.LENGTH_SHORT).show();
-
-                            Snackbar.make(root.findViewById(R.id.coordinatorlayout_category), "已删除一条记录", Snackbar.LENGTH_SHORT).setAction("撤销", new View.OnClickListener() {
+                            Snackbar.make(root.findViewById(R.id.fragment_category), "已删除一条记录", Snackbar.LENGTH_SHORT).setAction("撤销", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     list.add(toDelete);
@@ -151,8 +166,6 @@ public class CategoryFragment extends Fragment {
                             }).show();
                         }
                     });
-
-
                 }
                 if (s.contains("4")) {
 
@@ -168,6 +181,13 @@ public class CategoryFragment extends Fragment {
                     for (int i = 0; i < 20; i++) {
                         list.add(i + "xxx");
                     }
+//                    if(allCategories!=null)
+//                    for(Category c:allCategories){
+//                        if(!c.isType()){
+//                            list.add(c.getName());
+//                        }
+//                    }
+
                     adapter.notifyDataSetChanged(list);
 
                     mRecyclerView.setOnItemMoveListener(new OnItemMoveListener() {
@@ -192,7 +212,7 @@ public class CategoryFragment extends Fragment {
                             adapter.notifyItemRemoved(position);
                             //Toast.makeText(CategoryActivity.this, "现在的第" + position + "条被删除。", Toast.LENGTH_SHORT).show();
 
-                            Snackbar.make(root.findViewById(R.id.coordinatorlayout_category), "已删除一条记录", Snackbar.LENGTH_SHORT).setAction("撤销", new View.OnClickListener() {
+                            Snackbar.make(root.findViewById(R.id.fragment_category), "已删除一条记录", Snackbar.LENGTH_SHORT).setAction("撤销", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     list.add(toDelete);
@@ -210,27 +230,23 @@ public class CategoryFragment extends Fragment {
     //初始化category数据库
     private void initCategory() {
         Category category1 = new Category();
-        category1.setId(1);
         category1.setIcon("category_out_1.png");
-        category1.setType(1);
+        category1.setType(true);
         category1.setName("健身");
         category1.setOrder(1);
         Category category2 = new Category();
-        category2.setId(2);
         category2.setIcon("2.png");
-        category2.setType(1);
+        category2.setType(true);
         category2.setName("购物");
         category2.setOrder(2);
         Category category3 = new Category();
-        category3.setId(1);
         category3.setIcon("3.png");
-        category3.setType(1);
+        category3.setType(true);
         category3.setName("通信");
         category3.setOrder(3);
         Category category4 = new Category();
-        category4.setId(1);
         category4.setIcon("20.png");
-        category4.setType(2);
+        category4.setType(false);
         category4.setName("工资");
         category4.setOrder(1);
         categoryViewModel.insertCategory(category1);

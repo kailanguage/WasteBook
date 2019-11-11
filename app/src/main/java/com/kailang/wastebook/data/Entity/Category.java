@@ -8,46 +8,47 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 
-@Entity(tableName = "category", indices = {@Index(value = {"category_unique_name"}, unique = true)})
+@Entity(tableName = "category")
 public class Category {
 
-    public static final int TYPE_EXPENSE = 0;
-    public static final int TYPE_INCOME = 1;
-
-    /** 分类记录 ID */
+    /**
+     * 分类记录 ID
+     */
     @ColumnInfo(name = "category_id")
     @PrimaryKey(autoGenerate = true)
     private long id;
 
-    /** 分类唯一名称 不可修改 */
-    @NonNull
-    @ColumnInfo(name = "category_unique_name")
-    private String uniqueName;
 
-    /** 分类名称 */
+    /**
+     * 分类名称
+     */
     @ColumnInfo(name = "category_name")
     private String name = "";
 
-    /** 图标 */
+    /**
+     * 图标
+     */
     @NonNull
     @ColumnInfo(name = "category_icon")
     private String icon = "";
 
-    /** 排序 */
+    /**
+     * 排序
+     */
     @ColumnInfo(name = "category_order")
     private int order;
 
-    /** 分类类型 */
+    /**
+     * 分类类型
+     */
     @ColumnInfo(name = "category_type")
-    private int type;
+    private boolean type;
 
-    /** 用户 ID */
+    /**
+     * 用户 ID
+     */
     @ColumnInfo(name = "category_user_id")
     private long accountId;
-
-    /** 同步状态 */
-    @ColumnInfo(name = "category_sync_status")
-    private int syncStatus;
 
     public long getId() {
         return id;
@@ -55,14 +56,6 @@ public class Category {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
     }
 
     public String getName() {
@@ -73,11 +66,12 @@ public class Category {
         this.name = name;
     }
 
+    @NonNull
     public String getIcon() {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(@NonNull String icon) {
         this.icon = icon;
     }
 
@@ -89,13 +83,12 @@ public class Category {
         this.order = order;
     }
 
-    @NonNull
-    public String getUniqueName() {
-        return uniqueName;
+    public boolean isType() {
+        return type;
     }
 
-    public void setUniqueName(@NonNull String uniqueName) {
-        this.uniqueName = uniqueName;
+    public void setType(boolean type) {
+        this.type = type;
     }
 
     public long getAccountId() {
@@ -104,13 +97,5 @@ public class Category {
 
     public void setAccountId(long accountId) {
         this.accountId = accountId;
-    }
-
-    public int getSyncStatus() {
-        return syncStatus;
-    }
-
-    public void setSyncStatus(int syncStatus) {
-        this.syncStatus = syncStatus;
     }
 }

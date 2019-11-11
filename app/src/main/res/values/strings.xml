@@ -41,6 +41,9 @@
     <string name="tab_text_1">支出</string>
     <string name="tab_text_2">收入</string>
 
+    <string name="tab_text_3">支出</string>
+    <string name="tab_text_4">收入</string>
+
 
     <!-- toolbar title of tall expense record add activity -->
     <string name="tally_add_record">记一笔&#8230;</string>
