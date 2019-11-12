@@ -28,6 +28,7 @@ import com.kailang.wastebook.R;
 import com.kailang.wastebook.adapters.WasteBookAdapter;
 import com.kailang.wastebook.data.Entity.WasteBook;
 import com.kailang.wastebook.ui.add.AddActivity;
+import com.kailang.wastebook.ui.category.CategoryActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +57,10 @@ public class DetailFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), AddActivity.class);
                 startActivity(intent);
                 //Navigation.findNavController(getActivity().getCurrentFocus()).navigate(R.id.action_navigation_home_to_addFragment);
+                break;
+            case R.id.category_item:
+                Intent intent2 = new Intent(getActivity(), CategoryActivity.class);
+                startActivity(intent2);
                 break;
         }
         return super.onOptionsItemSelected(item);
