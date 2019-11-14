@@ -25,7 +25,7 @@ public class CategoryViewModel extends AndroidViewModel {
     private LiveData<String> mText = Transformations.map(mIndex, new Function<Integer, String>() {
         @Override
         public String apply(Integer input) {
-            return "" + input;
+            return "index:" + input;
         }
     });
 

@@ -1,6 +1,7 @@
 package com.kailang.wastebook.ui.add;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,7 @@ public class AddFragment extends Fragment {
     private AddViewModel addViewModel;
     private FragmentAddBinding binding;
 
-    List<MyIconModel> mList;
+    List<MyIconModel> mList,mList2;
     private PageGridView<MyIconModel> mPageGridView;
 
 
@@ -70,8 +71,9 @@ public class AddFragment extends Fragment {
         addViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                initData();
+                Log.e("AddFragment",s);
                 if(s.contains("1")) {
+                    initData("支出");
                     mPageGridView =binding.getRoot().findViewById(R.id.vp_grid_view);
                     mPageGridView.setData(mList);
                     mPageGridView.setOnItemClickListener(new PageGridView.OnItemClickListener() {
@@ -83,13 +85,14 @@ public class AddFragment extends Fragment {
                     });
                 }
                 if(s.contains("2")){
+                    initData2("收入");
                     mPageGridView =binding.getRoot().findViewById(R.id.vp_grid_view);
-                    mPageGridView.setData(mList);
+                    mPageGridView.setData(mList2);
                     mPageGridView.setOnItemClickListener(new PageGridView.OnItemClickListener() {
                         @Override
                         public void onItemClick(int position) {
                             Toast.makeText(requireContext(),position+"", Toast.LENGTH_SHORT).show();
-                            addViewModel.setType(mList.get(position).getName());
+                            addViewModel.setType(mList2.get(position).getName());
                         }
                     });
                 }
@@ -99,10 +102,16 @@ public class AddFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void initData() {
+    private void initData(String str) {
         mList=new ArrayList<>();
         for(int i=0;i<20;i++){
-            mList.add(new MyIconModel("测试"+i,R.mipmap.ic_launcher));
+            mList.add(new MyIconModel(str+i,R.mipmap.ic_launcher));
+        }
+    }
+    private void initData2(String str) {
+        mList2=new ArrayList<>();
+        for(int i=0;i<10;i++){
+            mList2.add(new MyIconModel(str+i,R.mipmap.ic_launcher));
         }
     }
 }
