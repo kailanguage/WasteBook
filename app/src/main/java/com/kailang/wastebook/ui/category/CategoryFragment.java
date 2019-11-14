@@ -29,13 +29,11 @@ import java.util.Collections;
 import java.util.List;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class CategoryFragment extends Fragment {
 
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final String ARG_SECTION_NUMBER = "Category_number";
 
     private CategoryViewModel categoryViewModel;
 
@@ -56,7 +54,7 @@ public class CategoryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        categoryViewModel = ViewModelProviders.of(requireActivity()).get(CategoryViewModel.class);
+        categoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel.class);
         int index = 1;
         if (getArguments() != null) {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
@@ -82,7 +80,7 @@ public class CategoryFragment extends Fragment {
 
         categoryViewModel.getText().observe(this, new Observer<String>() {
             @Override
-            public void onChanged(String s) {
+            public void onChanged(@NonNull String s) {
                 Log.e("CategoryFragment",s);
                 if (s.contains("1")) {
                     mRecyclerView = root.findViewById(R.id.recyclerView_category);
@@ -128,6 +126,7 @@ public class CategoryFragment extends Fragment {
                     });
                 }
                 if (s.contains("2")) {
+
                     mRecyclerView2 = root.findViewById(R.id.recyclerView_category);
                     mRecyclerView2.setLayoutManager(new LinearLayoutManager(requireContext()));
                     mRecyclerView2.setLongPressDragEnabled(true); // 长按拖拽，默认关闭。

@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class AddFragment extends Fragment {
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final String ARG_SECTION_NUMBER = "AddFragment_number";
     private AddViewModel addViewModel;
     private FragmentAddBinding binding;
 
