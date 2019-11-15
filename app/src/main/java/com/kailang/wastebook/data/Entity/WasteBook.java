@@ -24,18 +24,22 @@ public class WasteBook {
     @ColumnInfo(name = "type")
     private boolean type;
     //具体类型
-    @ColumnInfo(name = "categories")
-    private String categories;
+    @ColumnInfo(name = "category")
+    private String category;
+
+    @ColumnInfo(name = "icon")
+    private String icon;
     //时间
     @ColumnInfo(name = "time")
     private long time;
     //备注
     private String note;
 
-    public WasteBook( boolean type, double amount,String categories, long time, String note) {
+    public WasteBook( boolean type, double amount,String category,String icon, long time, String note) {
         this.type = type;
         this.amount=amount;
-        this.categories = categories;
+        this.category = category;
+        this.icon=icon;
         this.time = time;
         this.note = note;
     }
@@ -72,12 +76,20 @@ public class WasteBook {
         this.type = type;
     }
 
-    public String getCategories() {
-        return categories;
+    public String getCategory() {
+        return category;
     }
 
-    public void setCategories(String categories) {
-        this.categories = categories;
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public long getTime() {

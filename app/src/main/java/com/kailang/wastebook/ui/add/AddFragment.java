@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -102,8 +103,11 @@ public class AddFragment extends Fragment {
                     mPageGridView.setOnItemClickListener(new PageGridView.OnItemClickListener() {
                         @Override
                         public void onItemClick(int position) {
-                            Toast.makeText(requireContext(),position+"", Toast.LENGTH_SHORT).show();
+                            addViewModel.setmAmountTextClear();
                             addViewModel.setType(mList.get(position).getName());
+                            addViewModel.setIconId(mList.get(position).getIconName());
+                            ImageView imageView=binding.getRoot().findViewById(R.id.imageView_AddFragment_category);
+                            imageView.setImageDrawable(requireContext().getDrawable(mList.get(position).getIconId()));
                         }
                     });
                 }
@@ -113,14 +117,15 @@ public class AddFragment extends Fragment {
                     mPageGridView.setOnItemClickListener(new PageGridView.OnItemClickListener() {
                         @Override
                         public void onItemClick(int position) {
-                            Toast.makeText(requireContext(),position+"", Toast.LENGTH_SHORT).show();
+                            addViewModel.setmAmountTextClear();
                             addViewModel.setType(mList2.get(position).getName());
+                            ImageView imageView=binding.getRoot().findViewById(R.id.imageView_AddFragment_category);
+                            imageView.setImageDrawable(requireContext().getDrawable(mList2.get(position).getIconId()));
                         }
                     });
                 }
             }
         });
-
         return binding.getRoot();
     }
 
@@ -130,23 +135,27 @@ public class AddFragment extends Fragment {
         mList2=new ArrayList<>();
         if (allCategories!=null)
         for(Category c:allCategories) {
-            Field field = null;
-            int res_ID;
-            try {
-                field = R.drawable.class.getField(c.getIcon());
-                res_ID = field.getInt(field.getName());
-            } catch (NoSuchFieldException e) {
-                 res_ID = R.drawable.ic_category_out_1;
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                 res_ID = R.drawable.ic_category_out_1;
-                e.printStackTrace();
-            }
             if(c.isType())
-                mList.add(new MyIconModel(c.getName(), res_ID));
+                mList.add(new MyIconModel(c.getName(), c.getIcon(),getDrawableId(c.getIcon())));
             if (!c.isType())
-                mList2.add(new MyIconModel(c.getName(),res_ID));
+                mList2.add(new MyIconModel(c.getName(), c.getIcon(),getDrawableId(c.getIcon())));
         }
+    }
+
+    private int getDrawableId(String iconName){
+        Field field = null;
+        int res_ID;
+        try {
+            field = R.drawable.class.getField(iconName);
+            res_ID = field.getInt(field.getName());
+        } catch (NoSuchFieldException e) {
+            res_ID = R.drawable.ic_category_out_1;
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            res_ID = R.drawable.ic_category_out_1;
+            e.printStackTrace();
+        }
+        return res_ID;
     }
 
 }

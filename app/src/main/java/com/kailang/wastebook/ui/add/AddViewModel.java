@@ -3,6 +3,7 @@ package com.kailang.wastebook.ui.add;
 import android.app.Activity;
 import android.app.Application;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.navigation.Navigation;
 
+import com.kailang.wastebook.MainActivity;
 import com.kailang.wastebook.R;
 import com.kailang.wastebook.data.CategoryRepository;
 import com.kailang.wastebook.data.Entity.Category;
@@ -44,6 +46,7 @@ public class AddViewModel extends AndroidViewModel {
     private ObservableField<String> mAmountText=new ObservableField<>();
     private ObservableField<String> mDesc=new ObservableField<>();
     private ObservableField<String> mType=new ObservableField<>();
+    private String iconId;
     private long mDate;
     private double mAmount;
     private WasteBookRepository wasteBookRepository;
@@ -130,25 +133,26 @@ public class AddViewModel extends AndroidViewModel {
     }
     /** 确定点击 */
     public void onEnterClick(Activity activity) {
-        if(getType().get().isEmpty()&&getAmountText().get().isEmpty()){
+        if(getType().get()==null||getAmountText().get()==null||iconId==null){
             Toast.makeText(activity,"请输入完整的信息",Toast.LENGTH_SHORT).show();
         }else {
             Boolean wasteBookType=true;
             if (getText().getValue().contains("2"))wasteBookType=false;
             Log.e("xxxxxxxxxxx",mAmountFormat.format(Double.parseDouble(getAmountText().get())));
-            WasteBook wasteBook = new WasteBook(wasteBookType, Double.parseDouble(getAmountText().get()),getType().get(),mDate,getDesc().get().trim());
+            WasteBook wasteBook = new WasteBook(wasteBookType, Double.parseDouble(getAmountText().get()),getType().get(),iconId,mDate,getDesc().get().trim());
             saveData(wasteBook);
             //activity.finish();
+            Intent intent = new Intent(activity, MainActivity.class);
+            activity.startActivity(intent);
         }
+    }
+    public void setIconId(String iconId){
+        this.iconId=iconId;
     }
 
     private void saveData(WasteBook wasteBook) {
         Log.e("xxxxxx","insert");
        wasteBookRepository.insertWasteBook(wasteBook);
-    }
-
-    public List<Category> getAllCategories(){
-        return categoryRepository.getAllCategories();
     }
 
     public LiveData<List<Category>> getAllCategoriesLive(){
@@ -168,6 +172,10 @@ public class AddViewModel extends AndroidViewModel {
 
     public ObservableField<String> getAmountText() {
         return mAmountText;
+    }
+
+    public void setmAmountTextClear() {
+        this.mAmountText.set("");
     }
 
     public ObservableField<String> getDesc() {
