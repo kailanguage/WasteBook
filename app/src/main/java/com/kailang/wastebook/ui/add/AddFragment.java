@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,9 +20,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kailang.wastebook.R;
 
 
+import com.kailang.wastebook.data.Entity.Category;
 import com.kailang.wastebook.databinding.FragmentAddBinding;
+import com.kailang.wastebook.ui.category.CategoryViewModel;
 import com.wihaohao.PageGridView;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +37,9 @@ public class AddFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "AddFragment_number";
     private AddViewModel addViewModel;
     private FragmentAddBinding binding;
-
-    List<MyIconModel> mList,mList2;
+    private List<MyIconModel> mList,mList2;
+    private LiveData<List<Category>> allCategoriesLive;
+    private List<Category> allCategories;
     private PageGridView<MyIconModel> mPageGridView;
 
 
@@ -50,11 +55,30 @@ public class AddFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addViewModel = ViewModelProviders.of(this).get(AddViewModel.class);
-        int index = 1;
-        if (getArguments() != null) {
-            index = getArguments().getInt(ARG_SECTION_NUMBER);
-        }
-        addViewModel.setIndex(index);
+//        int index = 1;
+//        if (getArguments() != null) {
+//            index = getArguments().getInt(ARG_SECTION_NUMBER);
+//        }
+//        addViewModel.setIndex(index);
+        allCategoriesLive=addViewModel.getAllCategoriesLive();
+        allCategoriesLive.observe(this, new Observer<List<Category>>() {
+            @Override
+            public void onChanged(List<Category> categories) {
+                allCategories=categories;
+                if(categories!=null&&!categories.isEmpty()){
+                    Log.e("xxxxAddFragmentsize",allCategories.size()+"");
+                    initData();
+                    int index = 1;
+                    if (getArguments() != null) {
+                        index = getArguments().getInt(ARG_SECTION_NUMBER);
+                    }
+                    addViewModel.setIndex(index);
+                for(Category c:allCategories)
+                    Log.e("xxxxAddFragment",c.getName()+" "+c.getIcon());
+                }
+            }
+        });
+
     }
 
     @Override
@@ -66,14 +90,13 @@ public class AddFragment extends Fragment {
         binding.setVm(addViewModel);
         binding.setActivity(getActivity());
         binding.setLifecycleOwner(getViewLifecycleOwner());
-
-
+        initData();
+       // initData(addViewModel.getAllCategories());
         addViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 Log.e("AddFragment",s);
                 if(s.contains("1")) {
-                    initData("支出");
                     mPageGridView =binding.getRoot().findViewById(R.id.vp_grid_view);
                     mPageGridView.setData(mList);
                     mPageGridView.setOnItemClickListener(new PageGridView.OnItemClickListener() {
@@ -85,7 +108,6 @@ public class AddFragment extends Fragment {
                     });
                 }
                 if(s.contains("2")){
-                    initData2("收入");
                     mPageGridView =binding.getRoot().findViewById(R.id.vp_grid_view);
                     mPageGridView.setData(mList2);
                     mPageGridView.setOnItemClickListener(new PageGridView.OnItemClickListener() {
@@ -102,16 +124,29 @@ public class AddFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void initData(String str) {
+
+    private void initData() {
         mList=new ArrayList<>();
-        for(int i=0;i<20;i++){
-            mList.add(new MyIconModel(str+i,R.mipmap.ic_launcher));
-        }
-    }
-    private void initData2(String str) {
         mList2=new ArrayList<>();
-        for(int i=0;i<10;i++){
-            mList2.add(new MyIconModel(str+i,R.mipmap.ic_launcher));
+        if (allCategories!=null)
+        for(Category c:allCategories) {
+            Field field = null;
+            int res_ID;
+            try {
+                field = R.drawable.class.getField(c.getIcon());
+                res_ID = field.getInt(field.getName());
+            } catch (NoSuchFieldException e) {
+                 res_ID = R.drawable.ic_category_out_1;
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                 res_ID = R.drawable.ic_category_out_1;
+                e.printStackTrace();
+            }
+            if(c.isType())
+                mList.add(new MyIconModel(c.getName(), res_ID));
+            if (!c.isType())
+                mList2.add(new MyIconModel(c.getName(),res_ID));
         }
     }
+
 }

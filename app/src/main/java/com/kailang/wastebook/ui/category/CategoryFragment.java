@@ -42,6 +42,7 @@ public class CategoryFragment extends Fragment {
     private SwipeRecyclerView mRecyclerView,mRecyclerView2;
     private CategoryDragTouchAdapter adapter,adapter2;
     private List<String> list,list2;
+    private static boolean isInitCategory=false;
 
     public static CategoryFragment newInstance(int index) {
         CategoryFragment fragment = new CategoryFragment();
@@ -60,6 +61,18 @@ public class CategoryFragment extends Fragment {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
         categoryViewModel.setIndex(index);
+        allCategoriesLive=categoryViewModel.getAllCategoriesLive();
+        allCategoriesLive.observe(this, new Observer<List<Category>>() {
+            @Override
+            public void onChanged(List<Category> categories) {
+                allCategories=categories;
+                if(categories.size()==0&&!isInitCategory)initCategory();
+//                Log.e("xxxxxxsize",allCategories.size()+"");
+//                for(Category c:allCategories)
+//                    Log.e("xxxcategory:",c.getName()+" "+c.getIcon());
+            }
+        });
+
     }
 
     @Override
@@ -67,16 +80,12 @@ public class CategoryFragment extends Fragment {
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_category, container, false);
-        allCategoriesLive=categoryViewModel.getAllCategoriesLive();
-        allCategoriesLive.observe(getViewLifecycleOwner(), new Observer<List<Category>>() {
-            @Override
-            public void onChanged(List<Category> categories) {
-                allCategories=categories;
-            }
-        });
+
 
         list = new ArrayList<>();
         list2=new ArrayList<>();
+        OUTCategory=new ArrayList<>();
+        INCategory=new ArrayList<>();
 
         categoryViewModel.getText().observe(this, new Observer<String>() {
             @Override
@@ -89,11 +98,24 @@ public class CategoryFragment extends Fragment {
                     mRecyclerView.setItemViewSwipeEnabled(true); // 滑动删除，默认关闭。
                     adapter = new CategoryDragTouchAdapter(requireContext(), mRecyclerView);
                     mRecyclerView.setAdapter(adapter);
-                    //读取数据库数据
-                    for (int i = 0; i < 20; i++) {
-                        list.add(i + " 支出");
-                    }
-                    adapter.notifyDataSetChanged(list);
+
+                    //感知数据更新
+                    allCategoriesLive.observe(getViewLifecycleOwner(), new Observer<List<Category>>() {
+                        @Override
+                        public void onChanged(List<Category> categories) {
+                            for(Category c:categories){
+                                if (c.isType()) {
+                                    list.add(c.getName());
+                                    OUTCategory.add(c);
+                                }
+                            }
+                            adapter.setAllCategory(OUTCategory);
+                            int temp = adapter.getItemCount();
+                            if(temp!=categories.size()){
+                                adapter.notifyDataSetChanged();
+                            }
+                        }
+                    });
 
                     mRecyclerView.setOnItemMoveListener(new OnItemMoveListener() {
                         @Override
@@ -126,25 +148,31 @@ public class CategoryFragment extends Fragment {
                     });
                 }
                 if (s.contains("2")) {
-
+                    //读取数据库数据
+                    //感知数据更新
+                    allCategoriesLive.observe(getViewLifecycleOwner(), new Observer<List<Category>>() {
+                        @Override
+                        public void onChanged(List<Category> categories) {
+                            for(Category c:categories){
+                                if (!c.isType()) {
+                                    list2.add(c.getName());
+                                    INCategory.add(c);
+                                }
+                            }
+                            adapter2.setAllCategory(INCategory);
+                            int temp = adapter2.getItemCount();
+                            if(temp!=categories.size()){
+                                adapter2.notifyDataSetChanged();
+                            }
+                        }
+                    });
                     mRecyclerView2 = root.findViewById(R.id.recyclerView_category);
                     mRecyclerView2.setLayoutManager(new LinearLayoutManager(requireContext()));
                     mRecyclerView2.setLongPressDragEnabled(true); // 长按拖拽，默认关闭。
                     mRecyclerView2.setItemViewSwipeEnabled(true); // 滑动删除，默认关闭。
                     adapter2 = new CategoryDragTouchAdapter(requireContext(), mRecyclerView2);
                     mRecyclerView2.setAdapter(adapter2);
-                    //读取数据库数据
-                    for (int i = 0; i < 20; i++) {
-                        list2.add(i + "收入");
-                    }
-//                    if(allCategories!=null)
-//                    for(Category c:allCategories){
-//                        if(!c.isType()){
-//                            list.add(c.getName());
-//                        }
-//                    }
 
-                    adapter2.notifyDataSetChanged(list2);
 
                     mRecyclerView2.setOnItemMoveListener(new OnItemMoveListener() {
                         @Override
@@ -185,30 +213,27 @@ public class CategoryFragment extends Fragment {
 
     //初始化category数据库
     private void initCategory() {
-        Category category1 = new Category();
-        category1.setIcon("category_out_1.png");
-        category1.setType(true);
-        category1.setName("健身");
-        category1.setOrder(1);
-        Category category2 = new Category();
-        category2.setIcon("2.png");
-        category2.setType(true);
-        category2.setName("购物");
-        category2.setOrder(2);
-        Category category3 = new Category();
-        category3.setIcon("3.png");
-        category3.setType(true);
-        category3.setName("通信");
-        category3.setOrder(3);
-        Category category4 = new Category();
-        category4.setIcon("20.png");
-        category4.setType(false);
-        category4.setName("工资");
-        category4.setOrder(1);
-        categoryViewModel.insertCategory(category1);
-        categoryViewModel.insertCategory(category2);
-        categoryViewModel.insertCategory(category3);
-        categoryViewModel.insertCategory(category4);
+        isInitCategory=true;
+        String[] categoryINName={"搬砖","工资","奖金","卖房"};
+        String[] categoryOUTName={"餐饮","购物","服饰","健身","交通","捐赠","社交","通信","房租","教育","医疗","生活","零食","旅行","水果"};
+        //支出
+        for(int i=0;i<categoryOUTName.length;i++) {
+            Category category = new Category();
+            category.setIcon("ic_category_out_"+(i+1));
+            category.setType(true);
+            category.setName(categoryOUTName[i]);
+            category.setOrder(i);
+            categoryViewModel.insertCategory(category);
+        }
+        //收入
+        for(int i=0;i<categoryINName.length;i++) {
+            Category category = new Category();
+            category.setIcon("ic_category_in_"+(i+1));
+            category.setType(false);
+            category.setName(categoryINName[i]);
+            category.setOrder(i);
+            categoryViewModel.insertCategory(category);
+        }
     }
 
 }

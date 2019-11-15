@@ -20,6 +20,8 @@ import androidx.lifecycle.Transformations;
 import androidx.navigation.Navigation;
 
 import com.kailang.wastebook.R;
+import com.kailang.wastebook.data.CategoryRepository;
+import com.kailang.wastebook.data.Entity.Category;
 import com.kailang.wastebook.data.Entity.WasteBook;
 import com.kailang.wastebook.data.UserRepository;
 import com.kailang.wastebook.data.WasteBookRepository;
@@ -31,6 +33,7 @@ import com.kailang.wastebook.utils.UIUtils;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class AddViewModel extends AndroidViewModel {
@@ -44,6 +47,7 @@ public class AddViewModel extends AndroidViewModel {
     private long mDate;
     private double mAmount;
     private WasteBookRepository wasteBookRepository;
+    private CategoryRepository categoryRepository;
 
     public AddViewModel(@NonNull Application application) {
         super(application);
@@ -52,6 +56,7 @@ public class AddViewModel extends AndroidViewModel {
         mDate = System.currentTimeMillis();
         mDateText.set(mDateFormat.format(new Date(mDate)));
         wasteBookRepository=new WasteBookRepository(application);
+        categoryRepository=new CategoryRepository(application);
     }
 
 
@@ -142,6 +147,13 @@ public class AddViewModel extends AndroidViewModel {
        wasteBookRepository.insertWasteBook(wasteBook);
     }
 
+    public List<Category> getAllCategories(){
+        return categoryRepository.getAllCategories();
+    }
+
+    public LiveData<List<Category>> getAllCategoriesLive(){
+        return categoryRepository.getAllCategoriesLive();
+    }
     public ObservableField<String> getDateText() {
         return mDateText;
     }
