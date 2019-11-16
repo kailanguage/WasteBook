@@ -153,7 +153,7 @@ public class DetailFragment extends Fragment {
         detailViewModel = ViewModelProviders.of(getActivity()).get(DetailViewModel.class);
         recyclerView = requireActivity().findViewById(R.id.recyclerView_memo);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        wasteBookAdapter = new WasteBookAdapter(requireContext(),detailViewModel);
+        wasteBookAdapter = new WasteBookAdapter(requireContext());
         recyclerView.setAdapter(wasteBookAdapter);
 
         //Item单击编辑

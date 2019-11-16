@@ -23,14 +23,13 @@ import java.util.List;
 
 public class WasteBookAdapter extends RecyclerView.Adapter<WasteBookAdapter.MyViewHolder> {
     private List<WasteBook> allWasteBook = new ArrayList<>();
-    private DetailViewModel detailViewModel;
     private static WasteBookClickListener clickListener;
     private DecimalFormat amountFormat = new DecimalFormat("#.##");
     private Context context;
 
-    public WasteBookAdapter(Context context,DetailViewModel detailViewModel) {
+    public WasteBookAdapter(Context context) {
         this.context=context;
-        this.detailViewModel = detailViewModel;
+
     }
 
     public void setAllWasteBook(List<WasteBook> allWasteBook) {
