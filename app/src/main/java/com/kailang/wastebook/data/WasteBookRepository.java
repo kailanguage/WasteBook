@@ -40,6 +40,9 @@ public class WasteBookRepository {
     public LiveData<List<WasteBook>> getAllWasteBooksLive(){
         return allWasteBooksLive;
     }
+    public LiveData<List<WasteBook>> getAllWasteBooksLiveByAmount(){
+        return wasteBookDao.getAllWasteBookLiveByAmount();
+    }
 
     private static class InsertAsyncTask extends AsyncTask<WasteBook,Void,Void> {
         private WasteBookDao wasteBookDao;

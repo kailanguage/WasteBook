@@ -22,9 +22,13 @@ public interface WasteBookDao {
     @Delete
     void deleteWasteBook(WasteBook... wasteBook);
 
-    //获取所有的记录
+    //获取所有的记录按时间排序
     @Query("SELECT * FROM WasteBook ORDER BY create_datetime DESC")
     LiveData<List<WasteBook>> getAllWasteBookLive();
+
+    //获取所有的记录按金额大小排序
+    @Query("SELECT * FROM WasteBook ORDER BY amount DESC")
+    LiveData<List<WasteBook>> getAllWasteBookLiveByAmount();
 
     //搜索数据库，范围包括备注和类型
     @Query("SELECT * FROM WasteBook WHERE note LIKE :pattern or category LIKE :pattern ORDER BY ID DESC")

@@ -103,7 +103,6 @@ public class CategoryFragment extends Fragment {
                             for(Category c:categories){
                                 if (c.isType()) {
                                     OUTCategory.add(c);
-                                    Log.e("xxxxxSQL",c.getName()+" "+c.getOrder());
                                 }
                             }
                             if(adapter.getItemCount()!=OUTCategory.size()){
@@ -113,6 +112,7 @@ public class CategoryFragment extends Fragment {
                         }
                     });
 
+                    //移动排序
                     mRecyclerView.setOnItemMoveListener(new OnItemMoveListener() {
                         @Override
                         public boolean onItemMove(RecyclerView.ViewHolder srcHolder, RecyclerView.ViewHolder targetHolder) {

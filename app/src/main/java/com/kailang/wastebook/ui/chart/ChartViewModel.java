@@ -19,6 +19,6 @@ public class ChartViewModel extends AndroidViewModel {
         wasteBookRepository = new WasteBookRepository(application);
     }
     public LiveData<List<WasteBook>> getAllWasteBookLive(){
-        return wasteBookRepository.getAllWasteBooksLive();
+        return wasteBookRepository.getAllWasteBooksLiveByAmount();
     }
 }

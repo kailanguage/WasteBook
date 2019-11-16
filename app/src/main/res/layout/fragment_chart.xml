@@ -20,7 +20,7 @@
                 android:id="@+id/tv_select_chart"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="当月▼"
+                android:text="近1个月▼"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +79,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_wasteBook_chart"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="200dp"
             tools:listitem="@layout/wastebook_card"/>
     </LinearLayout>
 </ScrollView>
