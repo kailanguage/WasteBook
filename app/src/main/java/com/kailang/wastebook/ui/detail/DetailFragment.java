@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -34,6 +35,7 @@ import com.kailang.wastebook.ui.add.AddActivity;
 import com.kailang.wastebook.ui.category.CategoryActivity;
 import com.kailang.wastebook.utils.DateToLongUtils;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,6 +54,7 @@ public class DetailFragment extends Fragment {
     private Double IN=0.0,OUT=0.0,TOTAL=0.0;
     private long start,end;
     private String TAG="DetailFragment";
+    private DecimalFormat mAmountFormat = new DecimalFormat("0.00");
 
     //选择器
     private OptionsPickerView pvNoLinkOptions;
@@ -86,6 +89,34 @@ public class DetailFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.detail_fragment_menu, menu);
 
+        //查找功能
+        SearchView searchView = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
+        searchView.setMaxWidth(750);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                final String pattern = newText.trim();
+                wasteBooks.removeObservers(getViewLifecycleOwner());
+                wasteBooks=detailViewModel.findWasteBookWithPattern(pattern);
+                wasteBooks.observe(getViewLifecycleOwner(), new Observer<List<WasteBook>>() {
+                    @Override
+                    public void onChanged(List<WasteBook> wasteBooks) {
+                        int temp = wasteBookAdapter.getItemCount();
+                        wasteBookAdapter.setAllWasteBook(wasteBooks);
+                        if(temp!=wasteBooks.size()){
+                            wasteBookAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+                return true;
+            }
+        });
+
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -113,7 +144,7 @@ public class DetailFragment extends Fragment {
 //            }
 //        });
 
-        //查询
+        //选择器
         initCustomOptionPicker();
         final TextView select = root.findViewById(R.id.tv_select_detail);
         select.setOnClickListener(new View.OnClickListener() {
@@ -180,9 +211,9 @@ public class DetailFragment extends Fragment {
                 tv_IN.setText("+ "+IN);
                 tv_OUT.setText("- "+OUT);
                 TOTAL=IN-OUT;
-                if(TOTAL>0)
-                tv_TOTAL.setText(""+TOTAL);
-                else tv_TOTAL.setText("无");
+//                if(TOTAL>0)
+                tv_TOTAL.setText(""+mAmountFormat.format(TOTAL));
+//                else tv_TOTAL.setText("无");
             }
         });
 
@@ -205,9 +236,9 @@ public class DetailFragment extends Fragment {
                 tv_IN.setText("+ "+IN);
                 tv_OUT.setText("- "+OUT);
                 TOTAL=IN-OUT;
-                if(TOTAL>0)
-                tv_TOTAL.setText(""+TOTAL);
-                else tv_TOTAL.setText("无");
+//                if(TOTAL>0)
+                tv_TOTAL.setText(""+mAmountFormat.format(TOTAL));
+//                else tv_TOTAL.setText("无");
             }
         });
 

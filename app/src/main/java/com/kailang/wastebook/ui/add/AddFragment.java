@@ -1,5 +1,6 @@
 package com.kailang.wastebook.ui.add;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import com.kailang.wastebook.R;
 
 import com.kailang.wastebook.data.Entity.Category;
 import com.kailang.wastebook.databinding.FragmentAddBinding;
+import com.kailang.wastebook.ui.category.CategoryActivity;
 import com.kailang.wastebook.ui.category.CategoryViewModel;
 import com.wihaohao.PageGridView;
 
@@ -102,11 +104,15 @@ public class AddFragment extends Fragment {
                     mPageGridView.setOnItemClickListener(new PageGridView.OnItemClickListener() {
                         @Override
                         public void onItemClick(int position) {
-                            addViewModel.setmAmountTextClear();
-                            addViewModel.setType(mList.get(position).getName());
-                            addViewModel.setIconId(mList.get(position).getIconName());
-                            ImageView imageView=binding.getRoot().findViewById(R.id.imageView_AddFragment_category);
-                            imageView.setImageDrawable(requireContext().getDrawable(mList.get(position).getIconId()));
+                            if(position==mList.size()-1){
+                                startActivity(new Intent(requireActivity(), CategoryActivity.class));
+                            }else {
+                                addViewModel.setmAmountTextClear();
+                                addViewModel.setType(mList.get(position).getName());
+                                addViewModel.setIconId(mList.get(position).getIconName());
+                                ImageView imageView = binding.getRoot().findViewById(R.id.imageView_AddFragment_category);
+                                imageView.setImageDrawable(requireContext().getDrawable(mList.get(position).getIconId()));
+                            }
                         }
                     });
                 }
@@ -116,11 +122,16 @@ public class AddFragment extends Fragment {
                     mPageGridView.setOnItemClickListener(new PageGridView.OnItemClickListener() {
                         @Override
                         public void onItemClick(int position) {
-                            addViewModel.setmAmountTextClear();
-                            addViewModel.setType(mList2.get(position).getName());
-                            addViewModel.setIconId(mList2.get(position).getIconName());
-                            ImageView imageView=binding.getRoot().findViewById(R.id.imageView_AddFragment_category);
-                            imageView.setImageDrawable(requireContext().getDrawable(mList2.get(position).getIconId()));
+                            if(position==mList2.size()-1){
+                                //跳转
+                                startActivity(new Intent(requireActivity(), CategoryActivity.class));
+                            }else {
+                                addViewModel.setmAmountTextClear();
+                                addViewModel.setType(mList2.get(position).getName());
+                                addViewModel.setIconId(mList2.get(position).getIconName());
+                                ImageView imageView = binding.getRoot().findViewById(R.id.imageView_AddFragment_category);
+                                imageView.setImageDrawable(requireContext().getDrawable(mList2.get(position).getIconId()));
+                            }
                         }
                     });
                 }
@@ -140,6 +151,8 @@ public class AddFragment extends Fragment {
             if (!c.isType())
                 mList2.add(new MyIconModel(c.getName(), c.getIcon(),getDrawableId(c.getIcon())));
         }
+        mList.add(new MyIconModel("设置",getDrawableId("ic_category_setting")));
+        mList2.add(new MyIconModel("设置",getDrawableId("ic_category_setting")));
     }
 
     private int getDrawableId(String iconName){

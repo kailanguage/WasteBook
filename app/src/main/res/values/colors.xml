@@ -2,8 +2,7 @@
 <resources>
     <color name="colorPrimary">#FFC107</color>
     <color name="colorPrimaryDark">#FF9800</color>
-    <color name="colorAccent">#D81B60</color>
-
+    <color name="colorAccent">#F44336</color>
 
     <attr format="color" name="colorOnPrimary"/>
 

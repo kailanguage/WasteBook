@@ -31,7 +31,10 @@ public class MyIconModel implements PageGridView.ItemModel {
         this.name = name;
         this.iconName=iconName;
         this.iconId = iconId;
-
+    }
+    public MyIconModel(String name,int iconId){
+        this.name = name;
+        this.iconId = iconId;
     }
 
     public String getIconName(){

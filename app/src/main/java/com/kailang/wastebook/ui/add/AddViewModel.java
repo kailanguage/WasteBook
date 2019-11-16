@@ -91,14 +91,14 @@ public class AddViewModel extends AndroidViewModel {
 
     /** 键盘数字点击 */
     public void onNumberClick(String number) {
-        String amount = mAmountText.get();
-        amount = TextUtils.isEmpty(amount) ? "" : amount;
-        if ("0".equals(amount)) {
-            amount = "";
-        }
-        amount += number;
-        mAmountText.set(amount);
-        mAmount = CommonUtils.string2float(amount, 0);
+            String amount = mAmountText.get();
+            amount = TextUtils.isEmpty(amount) ? "" : amount;
+            if ("0".equals(amount)) {
+                amount = "";
+            }
+            amount += number;
+            mAmountText.set(amount);
+            mAmount = CommonUtils.string2float(amount, 0);
     }
 
     /** 键盘删除点击 */
@@ -135,9 +135,6 @@ public class AddViewModel extends AndroidViewModel {
     public void onEnterClick(Activity activity) {
         if(getType().get()==null||getAmountText().get()==null||iconId==null){
             Toast.makeText(activity,"请输入完整的信息",Toast.LENGTH_SHORT).show();
-            Log.e("xxxxxxxx",getType().get());
-            Log.e("xxxxxxxx",getAmountText().get());
-            Log.e("xxxxxxxx",iconId);
         }else {
             Boolean wasteBookType=true;
             if (getText().getValue().contains("2"))wasteBookType=false;

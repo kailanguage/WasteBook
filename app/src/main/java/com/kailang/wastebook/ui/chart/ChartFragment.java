@@ -119,9 +119,12 @@ public class ChartFragment extends Fragment {
 //                for(WasteBook w:wasteBooks){
 //                    Log.e("xxxxxxxxxxx",w.getCategory()+sdf.format(new Date(w.getTime())));
 //                }
-
+                dataMap = new HashMap();
+                if(wasteBooks.isEmpty()){
+                    PieChartUtils.getPitChart().setPieChart(mPieChart, dataMap, isOUT ? "支出" : "收入", true);
+                }
                 if(wasteBooks!=null&&!wasteBooks.isEmpty()) {
-                    dataMap = new HashMap();
+
                     String categoriesTmp = "";
                     double[] cWeight = new double[wasteBooks.size()];
                     String[] categories = new String[wasteBooks.size()];
