@@ -124,6 +124,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
+            android:textColor="@color/warning"
             app:layout_constraintBottom_toTopOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="@+id/guideline10" />
     </androidx.constraintlayout.widget.ConstraintLayout>

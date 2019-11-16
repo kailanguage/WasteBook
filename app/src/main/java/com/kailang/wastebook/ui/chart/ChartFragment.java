@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -38,11 +39,22 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.kailang.wastebook.R;
+import com.kailang.wastebook.data.Entity.WasteBook;
+import com.kailang.wastebook.utils.DateToLongUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class ChartFragment extends Fragment {
+
+    private boolean isAll=false,isOUT=false;
+    private Double IN=0.0,OUT=0.0,TOTAL=0.0;
+    private long start,end;
+    private List<WasteBook> allWasteBooks;
+    private MutableLiveData<List<WasteBook>> selectedWasteBooks=new MutableLiveData<>();
 
     private ChartViewModel chartViewModel;
     private BarChart mBarChart;
@@ -150,50 +162,6 @@ public class ChartFragment extends Fragment {
         }
         mPieChart.invalidate();
 
-
-//        //条形图
-//        mBarChart = (BarChart) root.findViewById(R.id.mBarChart);
-//        //设置表格上的点，被点击的时候，的回调函数
-//        //mBarChart.setOnChartValueSelectedListener(this);
-//        ArrayList<Integer> list = new ArrayList<>();
-//        for(int i=100;i<10000;i=i+10){
-//            list.add(i);
-//        }
-//        setData3(list);
-//
-//        mBarChart.setDrawBarShadow(false);
-//        mBarChart.setDrawValueAboveBar(true);
-//        mBarChart.getDescription().setEnabled(false);
-//        // 如果60多个条目显示在图表,drawn没有值
-//        mBarChart.setMaxVisibleValueCount(60);
-//        // 扩展现在只能分别在x轴和y轴
-//        mBarChart.setPinchZoom(false);
-//        //是否显示表格颜色
-//        mBarChart.setDrawGridBackground(false);
-//        XAxis xAxis = mBarChart.getXAxis();
-//        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-//        xAxis.setDrawGridLines(false);
-//        // 只有1天的时间间隔
-//        xAxis.setGranularity(1f);
-//        xAxis.setLabelCount(7);
-//        xAxis.setAxisMaximum(50f);
-//        xAxis.setAxisMinimum(0f);
-//        //xAxis.setValueFormatter(xAxisFormatter);
-//
-//        YAxis leftAxis = mBarChart.getAxisLeft();
-//        leftAxis.setLabelCount(8, false);
-//        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-//        leftAxis.setSpaceTop(15f);
-//        //这个替换setStartAtZero(true)
-//        leftAxis.setAxisMinimum(0f);
-//        leftAxis.setAxisMaximum(50f);
-//        YAxis rightAxis = mBarChart.getAxisRight();
-//        rightAxis.setDrawGridLines(false);
-//        rightAxis.setLabelCount(8, false);
-//        rightAxis.setSpaceTop(15f);
-//        rightAxis.setAxisMinimum(0f);
-//        rightAxis.setAxisMaximum(50f);
-
         return root;
     }
 
@@ -271,7 +239,101 @@ public class ChartFragment extends Fragment {
         options1Items_date.add(item_0);
         options1Items_date.add(item_1);
         options1Items_date.add(item_2);
+    }
 
+
+
+    public void setSelectedWasteBook(){
+        List<WasteBook> wasteBookList=new ArrayList<>();
+        IN=0.0;OUT=0.0;TOTAL=0.0;
+        if(allWasteBooks!=null){
+            if(isAll){
+                for (WasteBook w:allWasteBooks){
+                    if(w.getTime()<=start&&w.getTime()>=end){
+                        wasteBookList.add(w);
+                        if(w.isType())OUT+=w.getAmount();
+                        else IN+=w.getAmount();
+                    }
+                }
+            }else if(isOUT){
+                for (WasteBook w:allWasteBooks){
+                    if(w.isType()&&w.getTime()<=start&&w.getTime()>=end){
+                        wasteBookList.add(w);
+                        OUT+=w.getAmount();
+                    }
+                }
+            }else {
+                for (WasteBook w:allWasteBooks){
+                    if(!w.isType()&&w.getTime()<=start&&w.getTime()>=end){
+                        wasteBookList.add(w);
+                        IN+=w.getAmount();
+                    }
+                }
+            }
+        }
+        selectedWasteBooks.setValue(wasteBookList);
+    }
+
+
+    private void selector(String type, String year, String month) {
+        switch (type){
+            case "全部":
+                isAll=true;
+                dealStartEnd(type,year,month);
+                break;
+            case "支出":
+                isOUT=true;
+                isAll=false;
+                dealStartEnd(type,year,month);
+                break;
+            case "收入":
+                isOUT=false;
+                isAll=false;
+                dealStartEnd(type,year,month);
+                break;
+        }
+        //开始筛选
+        setSelectedWasteBook();
+    }
+
+    private void dealStartEnd(String type, String year, String month){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        if(year.contains("近")){
+            start= DateToLongUtils.dateToLong(sdf.format(date));
+            if(year.contains("1")){
+                cal.add(Calendar.MONTH, -1);
+                end=DateToLongUtils.dateToLong(sdf.format(cal.getTime()));
+                Log.e("xxxxxxxxxxx",start+" "+end+" "+year);
+            }else if(year.contains("3")){
+                cal.add(Calendar.MONTH, -3);
+                end=DateToLongUtils.dateToLong(sdf.format(cal.getTime()));
+                Log.e("xxxxxxxxxxx",start+" "+end+" "+year);
+            }else if(year.contains("6")){
+                cal.add(Calendar.MONTH, -6);
+                end=DateToLongUtils.dateToLong(sdf.format(cal.getTime()));
+                Log.e("xxxxxxxxxxx",start+" "+end+" "+year);
+            }
+        }else {
+            //全年,否则月
+            int startYear =Integer.parseInt(year.substring(0,4));
+            if(month.isEmpty()){
+                end=DateToLongUtils.dateToLong(startYear+"-1-1 00:00:00");
+                start=DateToLongUtils.dateToLong(startYear+"-12-31 23:59:59");
+                Log.e("xxxxxxxxxxx",start+" "+end+" "+startYear);
+            }else{
+                int startMonth=Integer.parseInt(month.substring(0,month.length()-1));
+                date.setTime(DateToLongUtils.dateToLong(startYear+"-"+startMonth+"-1 00:00:00"));
+                cal.setTime(date);
+                Log.e("xxxxxxxxxx",sdf.format(cal.getTime()));
+                end=cal.getTimeInMillis();
+                cal.add(Calendar.MONTH, 1);
+                start=cal.getTimeInMillis();
+                Log.e("xxxxxxxxxxx",sdf.format(cal.getTime()));
+            }
+        }
     }
 
 }

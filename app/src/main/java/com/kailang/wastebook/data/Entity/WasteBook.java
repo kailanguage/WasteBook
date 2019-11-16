@@ -30,7 +30,7 @@ public class WasteBook {
     @ColumnInfo(name = "icon")
     private String icon;
     //时间
-    @ColumnInfo(name = "time")
+    @ColumnInfo(name = "create_datetime")
     private long time;
     //备注
     private String note;

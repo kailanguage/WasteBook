@@ -23,10 +23,14 @@ public interface WasteBookDao {
     void deleteWasteBook(WasteBook... wasteBook);
 
     //获取所有的记录
-    @Query("SELECT * FROM WasteBook ")
+    @Query("SELECT * FROM WasteBook ORDER BY create_datetime DESC")
     LiveData<List<WasteBook>> getAllWasteBookLive();
 
     //搜索数据库，范围包括备注和类型
     @Query("SELECT * FROM WasteBook WHERE note LIKE :pattern or category LIKE :pattern ORDER BY ID DESC")
     LiveData<List<WasteBook>>findWordsWithPattern(String pattern);
+
+//    @Query("SELECT * FROM WasteBook WHERE create_datetime between :a and :b")
+//    //@Query("select * from WasteBook where time between datetime(date(datetime('now',strftime('-%w day','now'))),' 1 second') and datetime(date(datetime('now',(6 - strftime('%w day','now'))||' day','1 day')),'-1 second')")
+//    LiveData<List<WasteBook>> selectWasteBookByLongTime(long a,long b);
 }

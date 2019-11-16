@@ -135,10 +135,13 @@ public class AddViewModel extends AndroidViewModel {
     public void onEnterClick(Activity activity) {
         if(getType().get()==null||getAmountText().get()==null||iconId==null){
             Toast.makeText(activity,"请输入完整的信息",Toast.LENGTH_SHORT).show();
+            Log.e("xxxxxxxx",getType().get());
+            Log.e("xxxxxxxx",getAmountText().get());
+            Log.e("xxxxxxxx",iconId);
         }else {
             Boolean wasteBookType=true;
             if (getText().getValue().contains("2"))wasteBookType=false;
-            Log.e("xxxxxxxxxxx",mAmountFormat.format(Double.parseDouble(getAmountText().get())));
+
             WasteBook wasteBook = new WasteBook(wasteBookType, Double.parseDouble(getAmountText().get()),getType().get(),iconId,mDate,getDesc().get().trim());
             saveData(wasteBook);
             //activity.finish();

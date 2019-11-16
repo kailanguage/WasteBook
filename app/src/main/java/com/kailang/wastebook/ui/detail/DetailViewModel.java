@@ -38,5 +38,8 @@ public class DetailViewModel extends AndroidViewModel {
         wasteBookRepository.deleteWasteBook(wasteBooks);
     }
 
+//    public LiveData<List<WasteBook>> selectWasteBookByLongTime(long a,long b){
+//        return wasteBookRepository.selectWasteBookByLongTime(a,b);
+//    }
 
 }

@@ -67,15 +67,14 @@ public class AddFragment extends Fragment {
             public void onChanged(List<Category> categories) {
                 allCategories=categories;
                 if(categories!=null&&!categories.isEmpty()){
-                    Log.e("xxxxAddFragmentsize",allCategories.size()+"");
                     initData();
                     int index = 1;
                     if (getArguments() != null) {
                         index = getArguments().getInt(ARG_SECTION_NUMBER);
                     }
                     addViewModel.setIndex(index);
-                for(Category c:allCategories)
-                    Log.e("xxxxAddFragment",c.getName()+" "+c.getIcon());
+//                for(Category c:allCategories)
+//                    Log.e("xxxxAddFragment",c.getName()+" "+c.getIcon());
                 }
             }
         });
@@ -119,6 +118,7 @@ public class AddFragment extends Fragment {
                         public void onItemClick(int position) {
                             addViewModel.setmAmountTextClear();
                             addViewModel.setType(mList2.get(position).getName());
+                            addViewModel.setIconId(mList2.get(position).getIconName());
                             ImageView imageView=binding.getRoot().findViewById(R.id.imageView_AddFragment_category);
                             imageView.setImageDrawable(requireContext().getDrawable(mList2.get(position).getIconId()));
                         }
