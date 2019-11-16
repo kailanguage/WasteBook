@@ -29,6 +29,10 @@ public class WasteBookRepository {
     public void deleteWasteBook(WasteBook...wasteBooks){
         new DeleteAsyncTask(wasteBookDao).execute(wasteBooks);
     }
+
+    public LiveData<List<WasteBook>>findWasteBookWithPattern(String pattern){
+        return wasteBookDao.findWordsWithPattern("%" + pattern + "%");
+    }
     public LiveData<List<WasteBook>> getAllWasteBooksLive(){
         return allWasteBooksLive;
     }

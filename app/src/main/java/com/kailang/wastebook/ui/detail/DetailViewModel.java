@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.kailang.wastebook.data.Entity.Category;
 import com.kailang.wastebook.data.Entity.WasteBook;
 import com.kailang.wastebook.data.WasteBookRepository;
 
@@ -23,9 +24,9 @@ public class DetailViewModel extends AndroidViewModel {
     public LiveData<List<WasteBook>> getAllWasteBookLive(){
         return wasteBookRepository.getAllWasteBooksLive();
     }
-//    public LiveData<List<WasteBook>> findMemoWithPattern(String pattern){
-//        return wasteBookRepository.findWasteBookWithPattern(pattern);
-//    }
+    public LiveData<List<WasteBook>> findWasteBookWithPattern(String pattern){
+        return wasteBookRepository.findWasteBookWithPattern(pattern);
+    }
     public void insertWasteBook(WasteBook... wasteBooks){
         wasteBookRepository.insertWasteBook(wasteBooks);
     }
@@ -36,5 +37,6 @@ public class DetailViewModel extends AndroidViewModel {
     public void deleteWasteBook(WasteBook... wasteBooks){
         wasteBookRepository.deleteWasteBook(wasteBooks);
     }
+
 
 }

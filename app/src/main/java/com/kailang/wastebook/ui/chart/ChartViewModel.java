@@ -12,7 +12,6 @@ public class ChartViewModel extends ViewModel {
         mText = new MutableLiveData<>();
         mText.setValue("This is chart fragment");
     }
-
     public LiveData<String> getText() {
         return mText;
     }

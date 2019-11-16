@@ -41,7 +41,6 @@ public class CategoryFragment extends Fragment {
     private List<Category> allCategories, INCategory, OUTCategory;
     private SwipeRecyclerView mRecyclerView,mRecyclerView2;
     private CategoryDragTouchAdapter adapter,adapter2;
-    private List<String> list,list2;
     private static boolean isInitCategory=false;
 
     public static CategoryFragment newInstance(int index) {
@@ -82,10 +81,7 @@ public class CategoryFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_category, container, false);
 
 
-        list = new ArrayList<>();
-        list2=new ArrayList<>();
-        OUTCategory=new ArrayList<>();
-        INCategory=new ArrayList<>();
+
 
         categoryViewModel.getText().observe(this, new Observer<String>() {
             @Override
@@ -103,15 +99,15 @@ public class CategoryFragment extends Fragment {
                     allCategoriesLive.observe(getViewLifecycleOwner(), new Observer<List<Category>>() {
                         @Override
                         public void onChanged(List<Category> categories) {
+                            OUTCategory=new ArrayList<>();
                             for(Category c:categories){
                                 if (c.isType()) {
-                                    list.add(c.getName());
                                     OUTCategory.add(c);
+                                    Log.e("xxxxxSQL",c.getName()+" "+c.getOrder());
                                 }
                             }
-                            adapter.setAllCategory(OUTCategory);
-                            int temp = adapter.getItemCount();
-                            if(temp!=categories.size()){
+                            if(adapter.getItemCount()!=OUTCategory.size()){
+                                adapter.setAllCategory(OUTCategory);
                                 adapter.notifyDataSetChanged();
                             }
                         }
@@ -122,50 +118,41 @@ public class CategoryFragment extends Fragment {
                         public boolean onItemMove(RecyclerView.ViewHolder srcHolder, RecyclerView.ViewHolder targetHolder) {
                             if (srcHolder.getItemViewType() != targetHolder.getItemViewType())
                                 return false;
-
                             int fromPosition = srcHolder.getAdapterPosition();
                             int toPosition = targetHolder.getAdapterPosition();
-
-                            Collections.swap(list, fromPosition, toPosition);
+                            Collections.swap(OUTCategory, fromPosition, toPosition);
                             adapter.notifyItemMoved(fromPosition, toPosition);
+
+//                            for (Category c:OUTCategory)
+//                                Log.e("xxxxposition",c.getName()+" "+c.getOrder());
+                            for (int i=0;i<OUTCategory.size();i++){
+                                Category category=OUTCategory.get(i);
+                                category.setOrder(i);
+                                categoryViewModel.updateCategory(category);
+                            }
                             return true;// 返回true表示处理了并可以换位置，返回false表示你没有处理并不能换位置。
                         }
 
                         @Override
                         public void onItemDismiss(RecyclerView.ViewHolder srcHolder) {
                             int position = srcHolder.getAdapterPosition();
-                            String toDelete = list.get(position);
-                            list.remove(position);
+                            Category toDelete = OUTCategory.get(position);
+                            OUTCategory.remove(position);
                             adapter.notifyItemRemoved(position);
+
+                            categoryViewModel.deleteCategory(toDelete);
                             //Toast.makeText(CategoryActivity.this, "现在的第" + position + "条被删除。", Toast.LENGTH_SHORT).show();
                             Snackbar.make(root.findViewById(R.id.fragment_category), "已删除一条记录", Snackbar.LENGTH_SHORT).setAction("撤销", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    list.add(toDelete);
+                                    categoryViewModel.insertCategory(toDelete);
                                 }
                             }).show();
                         }
                     });
                 }
                 if (s.contains("2")) {
-                    //读取数据库数据
-                    //感知数据更新
-                    allCategoriesLive.observe(getViewLifecycleOwner(), new Observer<List<Category>>() {
-                        @Override
-                        public void onChanged(List<Category> categories) {
-                            for(Category c:categories){
-                                if (!c.isType()) {
-                                    list2.add(c.getName());
-                                    INCategory.add(c);
-                                }
-                            }
-                            adapter2.setAllCategory(INCategory);
-                            int temp = adapter2.getItemCount();
-                            if(temp!=categories.size()){
-                                adapter2.notifyDataSetChanged();
-                            }
-                        }
-                    });
+
                     mRecyclerView2 = root.findViewById(R.id.recyclerView_category);
                     mRecyclerView2.setLayoutManager(new LinearLayoutManager(requireContext()));
                     mRecyclerView2.setLongPressDragEnabled(true); // 长按拖拽，默认关闭。
@@ -173,33 +160,56 @@ public class CategoryFragment extends Fragment {
                     adapter2 = new CategoryDragTouchAdapter(requireContext(), mRecyclerView2);
                     mRecyclerView2.setAdapter(adapter2);
 
+                    //读取数据库数据
+                    //感知数据更新
+                    allCategoriesLive.observe(getViewLifecycleOwner(), new Observer<List<Category>>() {
+                        @Override
+                        public void onChanged(List<Category> categories) {
+                            INCategory=new ArrayList<>();
+                            for(Category c:categories){
+                                if (!c.isType()) {
+                                    INCategory.add(c);
+                                }
+                            }
+                            if(adapter2.getItemCount()!=INCategory.size()){
+                                adapter2.setAllCategory(INCategory);
+                                adapter2.notifyDataSetChanged();
+                            }
+                        }
+                    });
 
                     mRecyclerView2.setOnItemMoveListener(new OnItemMoveListener() {
                         @Override
                         public boolean onItemMove(RecyclerView.ViewHolder srcHolder, RecyclerView.ViewHolder targetHolder) {
                             if (srcHolder.getItemViewType() != targetHolder.getItemViewType())
                                 return false;
-
                             int fromPosition = srcHolder.getAdapterPosition();
                             int toPosition = targetHolder.getAdapterPosition();
-
-                            Collections.swap(list2, fromPosition, toPosition);
+                            Collections.swap(INCategory, fromPosition, toPosition);
                             adapter2.notifyItemMoved(fromPosition, toPosition);
+
+                            //更新数据中的排序
+                            for (int i=0;i<INCategory.size();i++){
+                                Category category=INCategory.get(i);
+                                category.setOrder(i);
+                                categoryViewModel.updateCategory(category);
+                            }
+
                             return true;// 返回true表示处理了并可以换位置，返回false表示你没有处理并不能换位置。
                         }
 
                         @Override
                         public void onItemDismiss(RecyclerView.ViewHolder srcHolder) {
                             int position = srcHolder.getAdapterPosition();
-                            String toDelete = list2.get(position);
-                            list2.remove(position);
+                            Category toDelete = INCategory.get(position);
+                            INCategory.remove(position);
                             adapter2.notifyItemRemoved(position);
+                            categoryViewModel.deleteCategory(toDelete);
                             //Toast.makeText(CategoryActivity.this, "现在的第" + position + "条被删除。", Toast.LENGTH_SHORT).show();
-
                             Snackbar.make(root.findViewById(R.id.fragment_category), "已删除一条记录", Snackbar.LENGTH_SHORT).setAction("撤销", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    list2.add(toDelete);
+                                    categoryViewModel.insertCategory(toDelete);
                                 }
                             }).show();
                         }

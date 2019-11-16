@@ -28,9 +28,7 @@ public class CategoryRepository {
     public void deleteCategory(Category...categories){
         new DeleteAsyncTask(categoryDao).execute(categories);
     }
-    public List<Category> getAllCategories(){
-        return categoryDao.getAllCategories();
-    }
+
     public LiveData<List<Category>> getAllCategoriesLive(){
         return allCategoriesLive;
     }

@@ -25,4 +25,8 @@ public interface WasteBookDao {
     //获取所有的记录
     @Query("SELECT * FROM WasteBook ")
     LiveData<List<WasteBook>> getAllWasteBookLive();
+
+    //搜索数据库，范围包括备注和类型
+    @Query("SELECT * FROM WasteBook WHERE note LIKE :pattern or category LIKE :pattern ORDER BY ID DESC")
+    LiveData<List<WasteBook>>findWordsWithPattern(String pattern);
 }

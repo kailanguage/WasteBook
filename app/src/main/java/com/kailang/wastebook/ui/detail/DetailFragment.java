@@ -200,4 +200,17 @@ public class DetailFragment extends Fragment {
             options1Items_moonth.add(i+"月");
         }
     }
+
+    public List<WasteBook> getSelectedWasteBook(boolean out){
+        List<WasteBook> wasteBookList=new ArrayList<>();
+        if(allWasteBooks!=null)
+        for(WasteBook wasteBook:allWasteBooks){
+            if(wasteBook.isType()==out)
+                wasteBookList.add(wasteBook);
+        }
+        return wasteBookList;
+    }
+    public void getSelectedWasteBook(boolean out,long time){
+
+    }
 }
