@@ -21,6 +21,12 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustNothing">
+
+        </activity>
+        <activity android:name=".login.RegisterActivity"
+            android:theme="@style/Translucent" />
+        <activity android:name=".login.LoginActivity"
+            android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

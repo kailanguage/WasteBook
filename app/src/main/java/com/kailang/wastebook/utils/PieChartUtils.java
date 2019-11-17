@@ -48,6 +48,7 @@ public class PieChartUtils {
         // 1表示没有摩擦，会自动转化为0.9999,及其顺滑
         pieChart.setDragDecelerationFrictionCoef(0.35f);//设置滑动时的摩擦系数（值越小摩擦系数越大）
         pieChart.setCenterText(title);//设置环中的文字
+        pieChart.setEntryLabelColor(Color.DKGRAY);
         pieChart.setCenterTextSize(15f);//设置环中文字的大小
         pieChart.setCenterTextColor(PIE_COLORS[2]);
         pieChart.setRotationAngle(120f);//设置旋转角度

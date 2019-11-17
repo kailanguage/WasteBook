@@ -13,6 +13,17 @@
     <string name="cancel">取消</string>
     <string name="confirm">确定</string>
 
+
+    <string name="login_success">登录成功</string>
+    <string name="login">登录</string>
+    <string name="Username">用户名</string>
+    <string name="Password">密码</string>
+    <string name="forgot_your_password">忘记密码?</string>
+    <string name="go">登入</string>
+    <string name="repeat_password">重复密码</string>
+    <string name="next">注册</string>
+    <string name="register">注册</string>
+
     <string name="num_0">0</string>
     <string name="num_1">1</string>
     <string name="num_2">2</string>
