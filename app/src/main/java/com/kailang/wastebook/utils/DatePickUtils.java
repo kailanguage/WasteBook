@@ -36,7 +36,7 @@ public class DatePickUtils {
     private static void showDatePickDialog_Low(Activity activity, long selectedDate, final OnDatePickListener listener) {
         LayoutInflater inflater = LayoutInflater.from(activity);
         View contentView = inflater.inflate(
-                R.layout.dialog_tally_date_pick, null, false);
+                R.layout.dialog_date_pick, null, false);
         MaterialCalendarView materialCalendar = contentView.findViewById(R.id.calendarView);
         EditText etHour = contentView.findViewById(R.id.etHour);
         EditText etMinute = contentView.findViewById(R.id.etMinute);
@@ -92,7 +92,7 @@ public class DatePickUtils {
                                                     final OnDatePickListener listener) {
         LayoutInflater inflater = LayoutInflater.from(activity);
         View contentView = inflater.inflate(
-                R.layout.dialog_tally_date_pick, null, false);
+                R.layout.dialog_date_pick, null, false);
         CalendarView calendarView = contentView.findViewById(R.id.calendarView);
         EditText etHour = contentView.findViewById(R.id.etHour);
         EditText etMinute = contentView.findViewById(R.id.etMinute);

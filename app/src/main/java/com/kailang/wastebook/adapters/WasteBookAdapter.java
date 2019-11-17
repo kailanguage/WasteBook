@@ -15,6 +15,7 @@ import com.kailang.wastebook.R;
 import com.kailang.wastebook.data.Entity.WasteBook;
 import com.kailang.wastebook.ui.add.AddFragment;
 import com.kailang.wastebook.ui.detail.DetailViewModel;
+import com.kailang.wastebook.utils.DateToLongUtils;
 
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
@@ -59,6 +60,7 @@ public class WasteBookAdapter extends RecyclerView.Adapter<WasteBookAdapter.MyVi
 
         holder.tv_type.setText(wasteBook.getCategory());
         holder.imageView.setImageDrawable(context.getDrawable(getDrawableId(wasteBook.getIcon())));
+        holder.tv_date.setText(DateToLongUtils.longToDate(wasteBook.getTime()));
         if(wasteBook.isType())
             holder.tv_amount.setText("- "+amountFormat.format(wasteBook.getAmount()));
         else holder.tv_amount.setText(amountFormat.format(wasteBook.getAmount()));
@@ -71,11 +73,12 @@ public class WasteBookAdapter extends RecyclerView.Adapter<WasteBookAdapter.MyVi
 
     //自定义ViewHolder:内部类，static 防止内存泄露
     static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView tv_type,tv_desc,tv_amount;
+        TextView tv_type,tv_date,tv_amount;
         ImageView imageView;
         MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_type=itemView.findViewById(R.id.wastebook_type);
+            tv_date=itemView.findViewById(R.id.wastebook_date);
             tv_amount=itemView.findViewById(R.id.wastebook_amount);
             imageView=itemView.findViewById(R.id.imageView_wasteBook_category);
             itemView.setOnClickListener(this);

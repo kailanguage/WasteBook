@@ -133,7 +133,7 @@ public class AddViewModel extends AndroidViewModel {
     }
     /** 确定点击 */
     public void onEnterClick(Activity activity) {
-        if(getType().get()==null||getAmountText().get()==null||iconId==null){
+        if(getType().get()==null||getAmountText().get()==null||getAmountText().get().isEmpty()||iconId==null){
             Toast.makeText(activity,"请输入完整的信息",Toast.LENGTH_SHORT).show();
         }else {
             Boolean wasteBookType=true;
