@@ -7,11 +7,11 @@
         android:title="Search"
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/add_new"
-        android:icon="@drawable/ic_add_black_24dp"
-        android:title="@string/app_name"
-        app:showAsAction="always"></item>
+<!--    <item-->
+<!--        android:id="@+id/add_new"-->
+<!--        android:icon="@drawable/ic_add_black_24dp"-->
+<!--        android:title="@string/app_name"-->
+<!--        app:showAsAction="always"></item>-->
     <item
         android:id="@+id/category_item"
         android:icon="@drawable/ic_loyalty_black_24dp"

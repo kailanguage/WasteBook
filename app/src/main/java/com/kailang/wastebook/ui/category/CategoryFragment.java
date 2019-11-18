@@ -1,9 +1,12 @@
 package com.kailang.wastebook.ui.category;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -15,12 +18,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
 
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.kailang.wastebook.R;
 import com.kailang.wastebook.adapters.CategoryDragTouchAdapter;
 import com.kailang.wastebook.data.Entity.Category;
+import com.yanzhenjie.recyclerview.OnItemLongClickListener;
 import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 import com.yanzhenjie.recyclerview.touch.OnItemMoveListener;
 
@@ -42,6 +49,7 @@ public class CategoryFragment extends Fragment {
     private SwipeRecyclerView mRecyclerView,mRecyclerView2;
     private CategoryDragTouchAdapter adapter,adapter2;
     private static boolean isInitCategory=false;
+    private FloatingActionButton floatingActionButton;
 
     public static CategoryFragment newInstance(int index) {
         CategoryFragment fragment = new CategoryFragment();
@@ -80,9 +88,6 @@ public class CategoryFragment extends Fragment {
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_category, container, false);
 
-
-
-
         categoryViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@NonNull String s) {
@@ -92,6 +97,7 @@ public class CategoryFragment extends Fragment {
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
                     mRecyclerView.setLongPressDragEnabled(true); // 长按拖拽，默认关闭。
                     mRecyclerView.setItemViewSwipeEnabled(true); // 滑动删除，默认关闭。
+//                    mRecyclerView.setLongClickable(true);    //长按删除
                     adapter = new CategoryDragTouchAdapter(requireContext(), mRecyclerView);
                     mRecyclerView.setAdapter(adapter);
 
@@ -112,8 +118,10 @@ public class CategoryFragment extends Fragment {
                         }
                     });
 
+
                     //移动排序
                     mRecyclerView.setOnItemMoveListener(new OnItemMoveListener() {
+
                         @Override
                         public boolean onItemMove(RecyclerView.ViewHolder srcHolder, RecyclerView.ViewHolder targetHolder) {
                             if (srcHolder.getItemViewType() != targetHolder.getItemViewType())
@@ -142,10 +150,41 @@ public class CategoryFragment extends Fragment {
 
                             categoryViewModel.deleteCategory(toDelete);
                             //Toast.makeText(CategoryActivity.this, "现在的第" + position + "条被删除。", Toast.LENGTH_SHORT).show();
-                            Snackbar.make(root.findViewById(R.id.fragment_category), "已删除一条记录", Snackbar.LENGTH_SHORT).setAction("撤销", new View.OnClickListener() {
+                            Snackbar.make(root.findViewById(R.id.fragment_category), "已删除一个分类", Snackbar.LENGTH_SHORT).setAction("撤销", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     categoryViewModel.insertCategory(toDelete);
+                                }
+                            }).show();
+                        }
+                    });
+
+                    floatingActionButton=root.findViewById(R.id.floatingActionButton_category);
+
+                    floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            EditText input = new EditText(getContext());
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setTitle("添加新类型").setView(input)
+                                    .setNegativeButton(R.string.cancel, null);
+                            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    String tmp;
+                                    tmp =input.getText().toString().trim();
+                                    if(!tmp.isEmpty()){
+                                        Category category = new Category();
+                                        category.setOrder(allCategories.size()+1);
+                                        category.setName(tmp);
+                                        category.setType(true);
+                                        category.setIcon("ic_category_out_16");
+                                        try {
+                                            categoryViewModel.insertCategory(category);
+                                        }catch (Exception e){
+                                            Toast.makeText(getContext(),"添加失败",Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
                                 }
                             }).show();
                         }
@@ -205,8 +244,28 @@ public class CategoryFragment extends Fragment {
                             INCategory.remove(position);
                             adapter2.notifyItemRemoved(position);
                             categoryViewModel.deleteCategory(toDelete);
+//                            final AlertDialog.Builder normalDialog =
+//                                    new AlertDialog.Builder(requireActivity());
+//                            normalDialog.setTitle("删除标签");
+//                            normalDialog.setMessage("您确定要删除次标签?");
+//                            normalDialog.setPositiveButton("确定",
+//                                    new DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(DialogInterface dialog, int which) {
+//                                            Toast.makeText(requireContext(),"已删除该标签",Toast.LENGTH_SHORT).show();
+//                                            categoryViewModel.deleteCategory(toDelete);
+//                                        }
+//                                    });
+//                            normalDialog.setNegativeButton("取消",
+//                                    new DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(DialogInterface dialog, int which) {
+//                                            Toast.makeText(requireContext(),"已取消删除",Toast.LENGTH_SHORT).show();
+//                                        }
+//                                    });
+//                            normalDialog.show();
                             //Toast.makeText(CategoryActivity.this, "现在的第" + position + "条被删除。", Toast.LENGTH_SHORT).show();
-                            Snackbar.make(root.findViewById(R.id.fragment_category), "已删除一条记录", Snackbar.LENGTH_SHORT).setAction("撤销", new View.OnClickListener() {
+                            Snackbar.make(root.findViewById(R.id.fragment_category), "已删除一个分类", Snackbar.LENGTH_SHORT).setAction("撤销", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     categoryViewModel.insertCategory(toDelete);
@@ -215,17 +274,51 @@ public class CategoryFragment extends Fragment {
                         }
                     });
 
+                    floatingActionButton=root.findViewById(R.id.floatingActionButton_category);
+
+                    floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            EditText input = new EditText(getContext());
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setTitle("添加新类型").setView(input)
+                                    .setNegativeButton(R.string.cancel, null);
+                            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    String tmp;
+                                    tmp =input.getText().toString().trim();
+                                    if(!tmp.isEmpty()){
+                                        Category category = new Category();
+                                        category.setOrder(allCategories.size()+1);
+                                        category.setName(tmp);
+                                        category.setType(false);
+                                        category.setIcon("ic_category_in_5");
+                                        try {
+                                            categoryViewModel.insertCategory(category);
+                                        }catch (Exception e){
+                                            Toast.makeText(getContext(),"添加失败",Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                }
+                            }).show();
+                        }
+                    });
+
                 }
             }
         });
+
+
         return root;
     }
+
 
     //初始化category数据库
     private void initCategory() {
         isInitCategory=true;
-        String[] categoryINName={"搬砖","工资","奖金","卖房"};
-        String[] categoryOUTName={"餐饮","购物","服饰","健身","交通","捐赠","社交","通信","房租","教育","医疗","生活","零食","旅行","水果"};
+        String[] categoryINName={"搬砖","工资","奖金","卖房","其它"};
+        String[] categoryOUTName={"餐饮","购物","服饰","健身","交通","捐赠","社交","通信","房租","教育","医疗","生活","零食","旅行","水果","其它"};
         //支出
         for(int i=0;i<categoryOUTName.length;i++) {
             Category category = new Category();

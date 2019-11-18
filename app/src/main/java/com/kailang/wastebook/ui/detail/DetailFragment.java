@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.kailang.wastebook.R;
 import com.kailang.wastebook.adapters.WasteBookAdapter;
@@ -71,11 +72,11 @@ public class DetailFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.add_new:
-                Intent intent = new Intent(getActivity(), AddActivity.class);
-                startActivity(intent);
-                //Navigation.findNavController(getActivity().getCurrentFocus()).navigate(R.id.action_navigation_home_to_addFragment);
-                break;
+//            case R.id.add_new:
+//                Intent intent = new Intent(getActivity(), AddActivity.class);
+//                startActivity(intent);
+//                //Navigation.findNavController(getActivity().getCurrentFocus()).navigate(R.id.action_navigation_home_to_addFragment);
+//                break;
             case R.id.category_item:
                 Intent intent2 = new Intent(getActivity(), CategoryActivity.class);
                 startActivity(intent2);
@@ -127,25 +128,17 @@ public class DetailFragment extends Fragment {
         tv_IN=root.findViewById(R.id.sum_in);
         tv_OUT=root.findViewById(R.id.sum_out);
         tv_TOTAL=root.findViewById(R.id.balance);
-//        final Spinner spinner = root.findViewById(R.id.spinner);
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireContext(), R.array.time_items, android.R.layout.simple_spinner_item);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinner.setAdapter(adapter);
-//
-//        //下拉列表选择事件监听器
-//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                if (i >= 0)
-//                    Toast.makeText(requireContext(), adapterView.getItemAtPosition(i).toString(), Toast.LENGTH_LONG).show();
-//            }
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//            }
-//        });
 
         //选择器
         initCustomOptionPicker();
+        final FloatingActionButton floatingActionButton = root.findViewById(R.id.floatingActionButton_detail);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AddActivity.class);
+                startActivity(intent);
+            }
+        });
         final TextView select = root.findViewById(R.id.tv_select_detail);
         select.setOnClickListener(new View.OnClickListener() {
             @Override
