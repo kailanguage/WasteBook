@@ -94,7 +94,7 @@
             android:id="@+id/tv_select_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="近一个月 全部▼"
+            android:text=" 全部 ▼"
             app:layout_constraintBottom_toTopOf="@+id/guideline3"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintStart_toStartOf="parent"

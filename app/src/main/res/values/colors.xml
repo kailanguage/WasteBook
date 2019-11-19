@@ -81,4 +81,8 @@
     <color name="icCategoryExpenseSelected">#ffffff</color>
     <color name="bgCategoryExpenseNormal">#08000000</color>
     <color name="bgCategoryExpenseSelected">@color/expenseColor</color>
+
+
+    <color name="bt_normal">#ffffff</color>
+    <color name="bt_selector">#3f000000</color>
 </resources>
