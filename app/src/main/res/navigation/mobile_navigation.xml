@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_navigation_home_to_addFragment"
             app:destination="@id/navigation_add" />
+        <action
+            android:id="@+id/action_navigation_detail_to_editFragment"
+            app:destination="@id/editFragment" />
     </fragment>
 
     <fragment
@@ -31,4 +34,13 @@
         android:name="com.kailang.wastebook.ui.add.AddFragment"
         android:label="add_fragment"
         tools:layout="@layout/fragment_add" />
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="com.kailang.wastebook.ui.detail.EditFragment"
+        android:label="账单详情"
+        tools:layout="@layout/fragment_edit" >
+        <action
+            android:id="@+id/action_editFragment_to_navigation_add"
+            app:destination="@id/navigation_add" />
+    </fragment>
 </navigation>

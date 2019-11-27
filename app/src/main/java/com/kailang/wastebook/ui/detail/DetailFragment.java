@@ -180,16 +180,6 @@ public class DetailFragment extends Fragment {
         wasteBookAdapter = new WasteBookAdapter(requireContext());
         recyclerView.setAdapter(wasteBookAdapter);
 
-        //Item单击编辑
-        wasteBookAdapter.setOnItemClickListener(new WasteBookAdapter.WasteBookClickListener() {
-            @Override
-            public void onItemClick(int position, View v) {
-                Bundle bundle = new Bundle();
-                bundle.putInt("memo", position);
-                //Navigation.findNavController(v).navigate(R.id.action_memoFragment_to_editFragment,bundle);
-            }
-        });
-
         //筛选，更新UI
         selectedWasteBooks.observe(getViewLifecycleOwner(), new Observer<List<WasteBook>>() {
             @Override

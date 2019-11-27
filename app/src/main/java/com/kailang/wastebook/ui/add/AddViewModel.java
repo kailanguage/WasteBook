@@ -2,15 +2,18 @@ package com.kailang.wastebook.ui.add;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.arch.core.util.Function;
 import androidx.databinding.ObservableField;
@@ -29,6 +32,7 @@ import com.kailang.wastebook.data.UserRepository;
 import com.kailang.wastebook.data.WasteBookRepository;
 import com.kailang.wastebook.utils.CommonUtils;
 import com.kailang.wastebook.utils.DatePickUtils;
+import com.kailang.wastebook.utils.DateToLongUtils;
 import com.kailang.wastebook.utils.ResUtils;
 import com.kailang.wastebook.utils.UIUtils;
 
@@ -51,6 +55,7 @@ public class AddViewModel extends AndroidViewModel {
     private double mAmount;
     private WasteBookRepository wasteBookRepository;
     private CategoryRepository categoryRepository;
+    private WasteBook wasteBookEdit;
 
     public AddViewModel(@NonNull Application application) {
         super(application);
@@ -65,8 +70,21 @@ public class AddViewModel extends AndroidViewModel {
 
     /** 消费说明点击 */
     public void onDescClick(Activity activity) {
-        EditText editText = activity.findViewById(R.id.tvDesc);
-        editText.setCursorVisible(true);
+
+        EditText input = new EditText(activity);
+        input.setText(getDesc().get());
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("添加备注").setView(input)
+                .setNegativeButton(R.string.cancel, null);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                String tmp;
+                tmp =input.getText().toString().trim();
+                if(!tmp.isEmpty()){
+                    setmDesc(tmp);
+                }
+            }
+        }).show();
     }
 
     /** 消费记录时间点击 */
@@ -138,9 +156,20 @@ public class AddViewModel extends AndroidViewModel {
         }else {
             Boolean wasteBookType=true;
             if (getText().getValue().contains("2"))wasteBookType=false;
-
-            WasteBook wasteBook = new WasteBook(wasteBookType, Double.parseDouble(getAmountText().get()),getType().get(),iconId,mDate,getDesc().get().trim());
-            saveData(wasteBook);
+            Log.e("getDesc",getDesc().get());
+            if(wasteBookEdit!=null){
+                wasteBookEdit.setAmount(Double.parseDouble(getAmountText().get()));
+                wasteBookEdit.setIcon(iconId);
+                wasteBookEdit.setCategory(getType().get());
+                wasteBookEdit.setNote(getDesc().get());
+                wasteBookEdit.setTime(mDate);
+                wasteBookEdit.setType(wasteBookType);
+                updateDate(wasteBookEdit);
+                Toast.makeText(activity,"修改成功!",Toast.LENGTH_SHORT).show();
+            }else {
+                WasteBook wasteBook = new WasteBook(wasteBookType, Double.parseDouble(getAmountText().get()), getType().get(), iconId, mDate, getDesc().get());
+                saveData(wasteBook);
+            }
             //activity.finish();
             Intent intent = new Intent(activity, MainActivity.class);
             activity.startActivity(intent);
@@ -150,6 +179,10 @@ public class AddViewModel extends AndroidViewModel {
         this.iconId=iconId;
     }
 
+    private void updateDate(WasteBook wasteBook){
+        Log.e("xxxxxx","update");
+        wasteBookRepository.updateWasteBook(wasteBook);
+    }
     private void saveData(WasteBook wasteBook) {
         Log.e("xxxxxx","insert");
        wasteBookRepository.insertWasteBook(wasteBook);
@@ -170,6 +203,8 @@ public class AddViewModel extends AndroidViewModel {
         this.mType.set(mType);
     }
 
+
+
     public ObservableField<String> getAmountText() {
         return mAmountText;
     }
@@ -179,7 +214,7 @@ public class AddViewModel extends AndroidViewModel {
     }
 
     public ObservableField<String> getDesc() {
-        if (mDesc.get()==null)
+        if(mDesc.get()==null)
             mDesc.set("");
         return mDesc;
     }
@@ -198,5 +233,30 @@ public class AddViewModel extends AndroidViewModel {
 
     public LiveData<String> getText() {
         return mText;
+    }
+
+    public void setmDateText(String mDateText) {
+        this.mDateText.set(mDateText);
+    }
+
+    public void setmDesc(String mDesc) {
+        this.mDesc.set(mDesc);
+    }
+
+    public void setmAmountText(String mAmountText) {
+        this.mAmountText.set(mAmountText);
+    }
+
+    public WasteBook getWasteBookEdit() {
+        return wasteBookEdit;
+    }
+
+    public void setWasteBook(WasteBook wasteBook){
+        this.wasteBookEdit=wasteBook;
+        this.setType(wasteBook.getCategory());
+        this.setmAmountText(mAmountFormat.format(wasteBook.getAmount()));
+        this.setmDesc(wasteBook.getNote());
+        this.setmDateText(DateToLongUtils.longToDateAdd(wasteBook.getTime()));
+        this.setIconId(wasteBook.getIcon());
     }
 }

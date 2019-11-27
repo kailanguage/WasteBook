@@ -30,6 +30,13 @@ public class DateToLongUtils {
         return date;
     }
 
+    public static String longToDateAdd(long d){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String date = sdf.format(new Date(d));
+        String now = sdf.format(new Date());
+        return date;
+    }
+
     public static String getSysYear() {
         Calendar date = Calendar.getInstance();
         String year = String.valueOf(date.get(Calendar.YEAR));
