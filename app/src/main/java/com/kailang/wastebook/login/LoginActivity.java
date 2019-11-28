@@ -39,12 +39,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        loginViewModel= ViewModelProviders.of(this).get(LoginViewModel.class);
+        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         loginViewModel.getAllUserLive().observe(this, new Observer<List<User>>() {
             @Override
             public void onChanged(List<User> users) {
-                if(users!=null){
-                    userList=users;
+                if (users != null) {
+                    userList = users;
                 }
             }
         });
@@ -65,25 +65,24 @@ public class LoginActivity extends AppCompatActivity {
         btGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(etPassword.getText().toString().trim().isEmpty()||etUsername.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(getApplicationContext(),"请输入完整的信息!",Toast.LENGTH_SHORT).show();
-                }else {
-                    if (userList != null&&!userList.isEmpty()) {
+                if (etPassword.getText().toString().trim().isEmpty() || etUsername.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "请输入完整的信息!", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (userList != null && !userList.isEmpty()) {
                         for (User u : userList) {
-                            if (u.getId().equals(etUsername.getText().toString().trim())&&u.getPassword().equals(etPassword.getText().toString().trim())){
-
+                            if (u.getId().equals(etUsername.getText().toString().trim()) && u.getPassword().equals(etPassword.getText().toString().trim())) {
                                 Explode explode = new Explode();
                                 explode.setDuration(500);
-
                                 getWindow().setExitTransition(explode);
                                 getWindow().setEnterTransition(explode);
                                 ActivityOptionsCompat oc2 = ActivityOptionsCompat.makeSceneTransitionAnimation(LoginActivity.this);
                                 Intent i2 = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(i2, oc2.toBundle());
-                            }else{
-                                Toast.makeText(getApplicationContext(), "登录失败，账号或密码错误!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "登录成功!", Toast.LENGTH_SHORT).show();
+                                return;
                             }
                         }
+                        Toast.makeText(getApplicationContext(), "登录失败，账号或密码错误!", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getApplicationContext(), "登录失败，未注册!", Toast.LENGTH_SHORT).show();
                     }

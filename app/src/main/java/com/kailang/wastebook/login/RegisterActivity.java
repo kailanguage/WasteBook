@@ -84,7 +84,6 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.makeText(RegisterActivity.this, "注册成功！", Toast.LENGTH_SHORT).show();
                             animateRevealClose();
                             return;
-
                         } else {
                             User user = new User(userName, password);
                             loginViewModel.insertUser(user);
