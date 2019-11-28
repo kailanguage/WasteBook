@@ -177,7 +177,7 @@ public class DetailFragment extends Fragment {
         detailViewModel = ViewModelProviders.of(getActivity()).get(DetailViewModel.class);
         recyclerView = requireActivity().findViewById(R.id.recyclerView_memo);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        wasteBookAdapter = new WasteBookAdapter(requireContext());
+        wasteBookAdapter = new WasteBookAdapter(requireContext(),true);
         recyclerView.setAdapter(wasteBookAdapter);
 
         //筛选，更新UI

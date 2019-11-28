@@ -185,7 +185,7 @@ public class ChartFragment extends Fragment {
 
         recyclerView = requireActivity().findViewById(R.id.recyclerView_wasteBook_chart);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        wasteBookAdapter = new WasteBookAdapter(requireContext());
+        wasteBookAdapter = new WasteBookAdapter(requireContext(),false);
         recyclerView.setAdapter(wasteBookAdapter);
 
 

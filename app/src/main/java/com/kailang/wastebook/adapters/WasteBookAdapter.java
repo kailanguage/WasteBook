@@ -28,9 +28,10 @@ public class WasteBookAdapter extends RecyclerView.Adapter<WasteBookAdapter.MyVi
     private List<WasteBook> allWasteBook = new ArrayList<>();
     private DecimalFormat amountFormat = new DecimalFormat("#.##");
     private Context context;
-
-    public WasteBookAdapter(Context context) {
+    private boolean isSetOnClickListener;
+    public WasteBookAdapter(Context context,boolean isSetOnClickListener) {
         this.context=context;
+        this.isSetOnClickListener=isSetOnClickListener;
 
     }
 
@@ -59,17 +60,18 @@ public class WasteBookAdapter extends RecyclerView.Adapter<WasteBookAdapter.MyVi
         if(wasteBook.isType())
             holder.tv_amount.setText("- "+amountFormat.format(wasteBook.getAmount()));
         else holder.tv_amount.setText(amountFormat.format(wasteBook.getAmount()));
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                Gson gson = new Gson();
-                String wasteBookJson = gson.toJson(wasteBook,WasteBook.class);
-                bundle.putString(EditFragment.WASTEBOOK_EDIT,wasteBookJson);
-                Navigation.findNavController(v).navigate(R.id.action_navigation_detail_to_editFragment,bundle);
-            }
-        });
+        if(isSetOnClickListener) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    Gson gson = new Gson();
+                    String wasteBookJson = gson.toJson(wasteBook, WasteBook.class);
+                    bundle.putString(EditFragment.WASTEBOOK_EDIT, wasteBookJson);
+                    Navigation.findNavController(v).navigate(R.id.action_navigation_detail_to_editFragment, bundle);
+                }
+            });
+        }
     }
 
     @Override
@@ -94,13 +96,14 @@ public class WasteBookAdapter extends RecyclerView.Adapter<WasteBookAdapter.MyVi
 //        public void onClick(View v) {
 //            clickListener.onItemClick(getAdapterPosition(),v);
 //        }
+
     }
 
 //    public void setOnItemClickListener(WasteBookClickListener clickListener){
 //        this.clickListener=clickListener;
 //    }
-
-    //点击事件接口
+//
+//    //点击事件接口
 //    public interface WasteBookClickListener {
 //        void onItemClick(int position, View v);
 //        //void onItemLongClick(int position, View v);
