@@ -8,7 +8,7 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 
-@Entity(tableName = "category")
+@Entity(tableName = "Category")
 public class Category {
 
     /**
