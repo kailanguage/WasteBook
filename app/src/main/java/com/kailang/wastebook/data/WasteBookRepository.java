@@ -29,6 +29,9 @@ public class WasteBookRepository {
     public void deleteWasteBook(WasteBook...wasteBooks){
         new DeleteAsyncTask(wasteBookDao).execute(wasteBooks);
     }
+    public void deleteAllWasteBooks(){
+        new DeleteAllAsyncTask(wasteBookDao).execute();
+    }
 
 //    public LiveData<List<WasteBook>> selectWasteBookByLongTime(long a,long b){
 //       return wasteBookDao.selectWasteBookByLongTime(a,b);
@@ -77,6 +80,17 @@ public class WasteBookRepository {
         @Override
         protected Void doInBackground(WasteBook... wasteBooks) {
             wasteBookDao.deleteWasteBook(wasteBooks);
+            return null;
+        }
+    }
+    private static class DeleteAllAsyncTask extends AsyncTask<Void,Void,Void> {
+        private WasteBookDao wasteBookDao;
+        public DeleteAllAsyncTask(WasteBookDao wasteBookDao) {
+            this.wasteBookDao = wasteBookDao;
+        }
+        @Override
+        protected Void doInBackground(Void... voids) {
+            wasteBookDao.deleteAllWasteBooks();
             return null;
         }
     }

@@ -43,6 +43,9 @@ public class WasteBook {
         this.time = time;
         this.note = note;
     }
+    public WasteBook(){
+
+    }
 
     public int getId() {
         return id;

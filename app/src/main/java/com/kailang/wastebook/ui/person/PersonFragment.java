@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,21 +24,26 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.kailang.wastebook.R;
+import com.kailang.wastebook.data.Entity.Category;
 import com.kailang.wastebook.data.Entity.WasteBook;
 import com.kailang.wastebook.login.LoginActivity;
 import com.kailang.wastebook.utils.DateToLongUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class PersonFragment extends Fragment {
 
     private final static String YEAR_BUDGET="year_budget_total",MONTH_BUDGET="month_budget_total";
     private PersonViewModel personViewModel;
+    private List<Category> categoryList;
     private SharedPreferences shp;
     private TextView tv_total_wastebook,tv_year_budget_total,tv_month_budget_total,tv_year_budget_left,tv_month_budget_left,tv_logout;
     private TextView et_year_budget_total,et_month_budget_total;
+    private ImageView imageView_AddTestSet;
     private String thisYear,thisMonth;
     private double yearTotal=0.0,monthTotal=0.0;
     private int y_b_shp,m_b_shp;
@@ -60,6 +66,8 @@ public class PersonFragment extends Fragment {
         et_month_budget_total=root.findViewById(R.id.et_month_budget_total);
         tv_year_budget_left=root.findViewById(R.id.tv_year_budget_left);
         tv_month_budget_left=root.findViewById(R.id.tv_month_budget_left);
+
+        imageView_AddTestSet=root.findViewById(R.id.imageView_AddTestSet);
 
         tv_logout=root.findViewById(R.id.textView_logout);
         tv_logout.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +118,16 @@ public class PersonFragment extends Fragment {
                         tv_year_budget_left.setText((y_b_shp-yearTotal)+"元");
                         tv_month_budget_left.setText((m_b_shp-monthTotal)+"元");
                     }
+                }
+            }
+        });
+
+        personViewModel.getAllCategoriesLive().observe(getViewLifecycleOwner(), new Observer<List<Category>>() {
+            @Override
+            public void onChanged(List<Category> categories) {
+                categoryList=categories;
+                if(categoryList!=null){
+                    categoryList.remove(categories.size()-1);
                 }
             }
         });
@@ -171,6 +189,117 @@ public class PersonFragment extends Fragment {
 
             }
         });
+
+
+        imageView_AddTestSet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("是否添加测试数据")
+                        .setNegativeButton(R.string.cancel, null);
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        addTestSet();
+                    }
+                }).show();
+
+            }
+        });
+        imageView_AddTestSet.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("是否清空数据")
+                        .setNegativeButton(R.string.cancel, null);
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        personViewModel.deleteAllWasteBooks();
+                    }
+                }).show();
+                return true;
+            }
+        });
     }
+    private void addTestSet(){
+        int mount=5;
+        String note="测试数据";
+        Random random = new Random();
+        Calendar cal = Calendar.getInstance();
+        Date date = new Date();
+        cal.setTime(date);
+
+        for(int i=0;i<mount*2;i++){
+            cal.add(Calendar.DAY_OF_MONTH, -i);
+            int a=random.nextInt(1000);
+            WasteBook wasteBook =new WasteBook();
+            wasteBook.setType(a%4!=0);
+            setWasteBookIconName(wasteBook);
+            wasteBook.setTime(cal.getTimeInMillis());
+            wasteBook.setNote(note);
+            if(a%2!=0)a=a*2;
+            wasteBook.setAmount(a+600);
+            personViewModel.insertWasteBook(wasteBook);
+            cal.setTime(date);
+        }
+        //month
+        for(int i=0;i<mount;i++){
+            cal.add(Calendar.MONTH, -i);
+            int a=random.nextInt(1000);
+            WasteBook wasteBook =new WasteBook();
+            wasteBook.setType(a%4!=0);
+            setWasteBookIconName(wasteBook);
+            wasteBook.setTime(cal.getTimeInMillis());
+            wasteBook.setNote(note);
+            if(a%2!=0)a=a*2;
+            wasteBook.setAmount(a+600);
+            personViewModel.insertWasteBook(wasteBook);
+            cal.setTime(date);
+        }
+
+        for(int i=0;i<mount/2;i++){
+            cal.add(Calendar.YEAR, -i);
+            int a=random.nextInt(1000);
+            WasteBook wasteBook =new WasteBook();
+            wasteBook.setType(a%4!=0);
+            setWasteBookIconName(wasteBook);
+            wasteBook.setTime(cal.getTimeInMillis());
+            wasteBook.setNote(note);
+            if(a%2!=0)a=a*2;
+            wasteBook.setAmount(a+600);
+            personViewModel.insertWasteBook(wasteBook);
+            cal.setTime(date);
+        }
+
+    }
+    private void setWasteBookIconName(WasteBook w){
+        if(categoryList!=null){
+            Random random = new Random();
+            int a=random.nextInt(categoryList.size()-1);
+            int temp=a;
+            w.setIcon(categoryList.get(a).getIcon());
+            w.setCategory(categoryList.get(a).getName());
+            while (categoryList.get(temp).isType()!=w.isType()){
+                w.setIcon(categoryList.get(a).getIcon());
+                w.setCategory(categoryList.get(a).getName());
+                temp=a;
+                a=random.nextInt(categoryList.size()-1);
+            }
+        }
+    }
+
+//    private String getCategoryIcon(boolean type){
+//        String categoryIcon = "ic_category_out_1";
+//        if(categoryList!=null){
+//            Random random = new Random();
+//            int a=random.nextInt(categoryList.size()-1);
+//            do{
+//                categoryIcon=categoryList.get(a).getIcon();
+//                Log.e("getCategoryIcon",categoryIcon);
+//                a=random.nextInt(categoryList.size()-1);
+//            }while (categoryList.get(a).isType()==type);
+//        }
+//        return categoryIcon;
+//    }
 
 }

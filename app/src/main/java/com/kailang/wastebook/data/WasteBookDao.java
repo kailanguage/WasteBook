@@ -22,6 +22,9 @@ public interface WasteBookDao {
     @Delete
     void deleteWasteBook(WasteBook... wasteBook);
 
+    @Query("DELETE FROM WasteBook")
+    void deleteAllWasteBooks();
+
     //获取所有的记录按时间排序
     @Query("SELECT * FROM WasteBook ORDER BY create_datetime DESC")
     LiveData<List<WasteBook>> getAllWasteBookLive();

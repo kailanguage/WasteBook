@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<User> users) {
                 if(users==null||users.isEmpty()){
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                   startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 }
             }
         });

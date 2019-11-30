@@ -18,7 +18,7 @@ public class DateToLongUtils {
             toLong = new Date();
             e.printStackTrace();
         }
-        Log.e("xxxDateToLongUtils", sdf.format(toLong));
+        //Log.e("xxxDateToLongUtils", sdf.format(toLong));
         return toLong.getTime();
     }
 
