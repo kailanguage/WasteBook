@@ -1,15 +1,19 @@
 package com.kailang.wastebook.ui.category;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.TaskStackBuilder;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.kailang.wastebook.R;
 
 
 public class CategoryActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +25,5 @@ public class CategoryActivity extends AppCompatActivity {
         TabLayout tabs = findViewById(R.id.tabs_category);
         tabs.setupWithViewPager(viewPager1);
     }
-
 
 }

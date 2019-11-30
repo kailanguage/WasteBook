@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_detail">
+    app:startDestination="@+id/navigation_detail"
+    tools:ignore="UnusedNavigation">
 
     <fragment
         android:id="@+id/navigation_detail"
@@ -42,5 +43,23 @@
         <action
             android:id="@+id/action_editFragment_to_navigation_add"
             app:destination="@id/navigation_add" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.kailang.wastebook.ui.category.CategoryFragment"
+        android:label="fragment_category"
+        tools:layout="@layout/fragment_category" >
+        <action
+            android:id="@+id/action_categoryFragment_to_categoryWasteBookFragment"
+            app:destination="@id/categoryWasteBookFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoryWasteBookFragment"
+        android:name="com.kailang.wastebook.ui.category.CategoryWasteBookFragment"
+        android:label="fragment_category_wastebook"
+        tools:layout="@layout/fragment_category_wastebook" >
+        <action
+            android:id="@+id/action_categoryWasteBookFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment" />
     </fragment>
 </navigation>

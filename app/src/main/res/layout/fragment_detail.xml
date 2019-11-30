@@ -19,15 +19,15 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.08" />
 
-    <TextView
-        android:id="@+id/textView_in"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/tab_text_2"
-        app:layout_constraintBottom_toTopOf="@+id/sum_in"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/textView_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_text_2"
+            app:layout_constraintBottom_toTopOf="@+id/sum_in"
+            app:layout_constraintEnd_toStartOf="@+id/guideline9"
+            app:layout_constraintStart_toStartOf="@+id/guideline8"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView_out"
@@ -38,14 +38,14 @@
             app:layout_constraintStart_toStartOf="@+id/guideline9"
             app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/sum_in"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintStart_toStartOf="@+id/guideline8" />
+        <TextView
+            android:id="@+id/sum_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            app:layout_constraintBottom_toTopOf="@+id/guideline3"
+            app:layout_constraintEnd_toStartOf="@+id/guideline9"
+            app:layout_constraintStart_toStartOf="@+id/guideline8" />
 
         <TextView
             android:id="@+id/sum_out"
@@ -78,17 +78,17 @@
             app:layout_constraintGuide_percent="0.8" />
 
         <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guideline3">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView_memo"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/wastebook_card"/>
-    </LinearLayout>
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="@id/guideline3">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView_memo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/wastebook_card" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_select_detail"
@@ -125,7 +125,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_marginRight="50dp"
-        android:clickable="true"
         android:layout_marginBottom="6dp"
+        android:clickable="true"
         android:src="@drawable/ic_add_black_24dp" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -2,6 +2,7 @@ package com.kailang.wastebook.ui.category;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,14 +21,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
 import com.kailang.wastebook.R;
 import com.kailang.wastebook.adapters.CategoryDragTouchAdapter;
 import com.kailang.wastebook.data.Entity.Category;
+import com.kailang.wastebook.data.Entity.WasteBook;
+import com.kailang.wastebook.ui.detail.EditFragment;
+import com.yanzhenjie.recyclerview.OnItemClickListener;
 import com.yanzhenjie.recyclerview.OnItemLongClickListener;
 import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 import com.yanzhenjie.recyclerview.touch.OnItemMoveListener;
@@ -48,8 +55,9 @@ public class CategoryFragment extends Fragment {
     private List<Category> allCategories, INCategory, OUTCategory;
     private SwipeRecyclerView mRecyclerView,mRecyclerView2;
     private CategoryDragTouchAdapter adapter,adapter2;
-    private static boolean isInitCategory=false;
+//    private static boolean isInitCategory=false;
     private FloatingActionButton floatingActionButton;
+
 
     public static CategoryFragment newInstance(int index) {
         CategoryFragment fragment = new CategoryFragment();
@@ -73,10 +81,7 @@ public class CategoryFragment extends Fragment {
             @Override
             public void onChanged(List<Category> categories) {
                 allCategories=categories;
-                if(categories.size()==0&&!isInitCategory)initCategory();
-//                Log.e("xxxxxxsize",allCategories.size()+"");
-//                for(Category c:allCategories)
-//                    Log.e("xxxcategory:",c.getName()+" "+c.getIcon());
+                //if(categories.size()==0&&!isInitCategory)initCategory();
             }
         });
 
@@ -99,6 +104,24 @@ public class CategoryFragment extends Fragment {
                     mRecyclerView.setItemViewSwipeEnabled(true); // 滑动删除，默认关闭。
 //                    mRecyclerView.setLongClickable(true);    //长按删除
                     adapter = new CategoryDragTouchAdapter(requireContext(), mRecyclerView);
+                    mRecyclerView.setOnItemClickListener(new OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int adapterPosition) {
+                            String temp = OUTCategory.get(adapterPosition).getName();
+                            if(temp!=null&&!temp.isEmpty()) {
+                                Log.e("xxxx", temp);
+                                Intent intent = new Intent(getContext(),CategoryWasteBookFragment.class);
+                                intent.putExtra(CategoryWasteBookFragment.ARG_PARAM1,temp);
+                                startActivity(intent);
+                                //Navigation.findNavController(get).navigate(R.id.action_categoryFragment_to_categoryWasteBookFragment, bundle);
+//                                getFragmentManager()
+//                                        .beginTransaction()
+//                                        //.addToBackStack(null)  //将当前fragment加入到返回栈中
+//                                        .replace(R.id.fragment_wb,  CategoryWasteBookFragment.newInstance(temp)).commit();
+                            }
+                        }
+                    });
+
                     mRecyclerView.setAdapter(adapter);
 
                     //感知数据更新
@@ -217,6 +240,13 @@ public class CategoryFragment extends Fragment {
                         }
                     });
 
+//                    mRecyclerView2.setOnItemClickListener(new OnItemClickListener() {
+//                        @Override
+//                        public void onItemClick(View view, int adapterPosition) {
+//                            Log.e("xxxx",INCategory.get(adapterPosition).getName());
+//                        }
+//                    });
+
                     mRecyclerView2.setOnItemMoveListener(new OnItemMoveListener() {
                         @Override
                         public boolean onItemMove(RecyclerView.ViewHolder srcHolder, RecyclerView.ViewHolder targetHolder) {
@@ -313,30 +343,29 @@ public class CategoryFragment extends Fragment {
         return root;
     }
 
-
     //初始化category数据库
-    private void initCategory() {
-        isInitCategory=true;
-        String[] categoryINName={"搬砖","工资","奖金","卖房","其它"};
-        String[] categoryOUTName={"餐饮","购物","服饰","健身","交通","捐赠","社交","通信","房租","教育","医疗","生活","零食","旅行","水果","其它"};
-        //支出
-        for(int i=0;i<categoryOUTName.length;i++) {
-            Category category = new Category();
-            category.setIcon("ic_category_out_"+(i+1));
-            category.setType(true);
-            category.setName(categoryOUTName[i]);
-            category.setOrder(i);
-            categoryViewModel.insertCategory(category);
-        }
-        //收入
-        for(int i=0;i<categoryINName.length;i++) {
-            Category category = new Category();
-            category.setIcon("ic_category_in_"+(i+1));
-            category.setType(false);
-            category.setName(categoryINName[i]);
-            category.setOrder(i);
-            categoryViewModel.insertCategory(category);
-        }
-    }
+//    private void initCategory() {
+//        isInitCategory=true;
+//        String[] categoryINName={"搬砖","工资","奖金","卖房","其它"};
+//        String[] categoryOUTName={"餐饮","购物","服饰","健身","交通","捐赠","社交","通信","房租","教育","医疗","生活","零食","旅行","水果","其它"};
+//        //支出
+//        for(int i=0;i<categoryOUTName.length;i++) {
+//            Category category = new Category();
+//            category.setIcon("ic_category_out_"+(i+1));
+//            category.setType(true);
+//            category.setName(categoryOUTName[i]);
+//            category.setOrder(i);
+//            categoryViewModel.insertCategory(category);
+//        }
+//        //收入
+//        for(int i=0;i<categoryINName.length;i++) {
+//            Category category = new Category();
+//            category.setIcon("ic_category_in_"+(i+1));
+//            category.setType(false);
+//            category.setName(categoryINName[i]);
+//            category.setOrder(i);
+//            categoryViewModel.insertCategory(category);
+//        }
+//    }
 
 }

@@ -31,7 +31,9 @@
             android:theme="@style/Translucent" />
         <activity android:name=".login.LoginActivity"
             android:theme="@style/NoActionBar">
-
+        </activity>
+        <activity android:name=".ui.category.CategoryWasteBookFragment"
+            android:theme="@style/NoActionBar">
         </activity>
     </application>
 

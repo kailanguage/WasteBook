@@ -124,7 +124,7 @@ public class ChartFragment extends Fragment {
                     PieChartUtils.getPitChart().setPieChart(mPieChart, dataMap, isOUT ? "支出" : "收入", true);
                 }
                 if(wasteBooks!=null&&!wasteBooks.isEmpty()) {
-
+                    List<WasteBook> wasteBooksTemp=new ArrayList<>();
                     String categoriesTmp = "";
                     double[] cWeight = new double[wasteBooks.size()];
                     String[] categories = new String[wasteBooks.size()];
@@ -132,6 +132,7 @@ public class ChartFragment extends Fragment {
                     for (WasteBook w : wasteBooks) {
                         String cTmp = w.getCategory();
                         if (!categoriesTmp.contains(cTmp)) {
+                            wasteBooksTemp.add(w);
                             categoriesTmp += cTmp + " ";
                             categories[i] = cTmp;
                             cWeight[i] += w.getAmount();
@@ -150,12 +151,8 @@ public class ChartFragment extends Fragment {
                     }
                     PieChartUtils.getPitChart().setPieChart(mPieChart, dataMap, isOUT ? "支出" : "收入", true);
 
-                    int tmp=wasteBookAdapter.getItemCount();
-
-                    wasteBookAdapter.setAllWasteBook(wasteBooks);
-                    if(tmp!=wasteBooks.size()) {
-                        wasteBookAdapter.notifyDataSetChanged();
-                    }
+                    wasteBookAdapter.setAllWasteBook(wasteBooksTemp);
+                    wasteBookAdapter.notifyDataSetChanged();
                 }
             }
         });
