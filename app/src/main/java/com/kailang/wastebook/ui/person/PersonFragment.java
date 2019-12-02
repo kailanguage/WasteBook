@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -113,40 +114,45 @@ public class PersonFragment extends Fragment {
                             }
                         }
                     }
-                    if (y_b_shp != 0 && m_b_shp != 0) {
+                    if (y_b_shp != 0 ) {
                         tv_year_budget_left.setText((y_b_shp - yearTotal) + "元");
+                    }
+                    if (m_b_shp != 0) {
                         tv_month_budget_left.setText((m_b_shp - monthTotal) + "元");
                     }
+                    if(y_b_shp != 0) {
+                        if ((yearTotal / y_b_shp >= 0.8) && (yearTotal / y_b_shp <= 1)) {
+                            Toast.makeText(getContext(), "年预算使用已超80%", Toast.LENGTH_SHORT).show();
+                        }
+                        if ((yearTotal / y_b_shp >= 1) && yShow) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                            builder.setTitle("警告")
+                                    .setMessage("已超出年预算，请计划经济")
+                                    .setNegativeButton(R.string.cancel, null);
+                            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    yShow = false;
+                                }
+                            }).show();
+                        }
+                    }
+                    if (m_b_shp != 0) {
+                        if ((monthTotal / m_b_shp >= 0.8) && (monthTotal / m_b_shp <= 1)) {
+                            Toast.makeText(getContext(), "月预算使用已超80%", Toast.LENGTH_SHORT).show();
+                        }
+                        if ((monthTotal / m_b_shp >= 1 && mShow)) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                            builder.setTitle("警告")
+                                    .setMessage("已超出月预算，请注意节俭")
+                                    .setNegativeButton(R.string.cancel, null);
+                            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mShow = false;
+                                }
+                            }).show();
+                        }
+                    }
 
-                    if ((yearTotal / y_b_shp >= 0.8) && (yearTotal / y_b_shp <= 1)) {
-                        Toast.makeText(getContext(), "年预算使用已超80%", Toast.LENGTH_SHORT).show();
-                    }
-                    if ((yearTotal / y_b_shp >= 1) && yShow) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setTitle("警告")
-                                .setMessage("已超出年预算，请计划经济")
-                                .setNegativeButton(R.string.cancel, null);
-                        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                yShow = false;
-                            }
-                        }).show();
-                    }
-
-                    if ((monthTotal / m_b_shp >= 0.8) && (monthTotal / m_b_shp <= 1)) {
-                        Toast.makeText(getContext(), "月预算使用已超80%", Toast.LENGTH_SHORT).show();
-                    }
-                    if ((monthTotal / m_b_shp >= 1 && mShow)) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setTitle("警告")
-                                .setMessage("已超出月预算，请注意节俭")
-                                .setNegativeButton(R.string.cancel, null);
-                        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                mShow = false;
-                            }
-                        }).show();
-                    }
                 }
             }
         });
@@ -166,7 +172,8 @@ public class PersonFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 EditText input = new EditText(getActivity());
-                input.setText(et_year_budget_total.getText().toString().substring(0, et_year_budget_total.getText().toString().length() - 1));
+                if(!et_year_budget_total.getText().toString().isEmpty())
+                    input.setText(et_year_budget_total.getText().toString().substring(0, et_year_budget_total.getText().toString().length() - 1));
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("添加年预算").setView(input)
                         .setNegativeButton(R.string.cancel, null);
@@ -194,7 +201,8 @@ public class PersonFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 EditText input = new EditText(getActivity());
-                input.setText(et_month_budget_total.getText().toString().substring(0, et_month_budget_total.getText().toString().length() - 1));
+                if(!et_month_budget_total.getText().toString().isEmpty())
+                    input.setText(et_month_budget_total.getText().toString().substring(0, et_month_budget_total.getText().toString().length() - 1));
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("添加月预算").setView(input)
                         .setNegativeButton(R.string.cancel, null);
