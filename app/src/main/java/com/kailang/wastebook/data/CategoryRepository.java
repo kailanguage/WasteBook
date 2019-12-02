@@ -13,28 +13,31 @@ public class CategoryRepository {
     private LiveData<List<Category>> allCategoriesLive;
     private CategoryDao categoryDao;
 
-    public CategoryRepository(Context context){
+    public CategoryRepository(Context context) {
         CategoryDatabase categoryDatabase = CategoryDatabase.getDatabase(context);
         categoryDao = categoryDatabase.getCategoryDao();
-        allCategoriesLive=categoryDao.getAllCategoriesLive();
+        allCategoriesLive = categoryDao.getAllCategoriesLive();
     }
-    public void insertCategory(Category...categories){
+
+    public void insertCategory(Category... categories) {
         new InsertAsyncTask(categoryDao).execute(categories);
     }
 
-    public void updateCategory(Category...categories){
+    public void updateCategory(Category... categories) {
         new UpdateAsyncTask(categoryDao).execute(categories);
     }
-    public void deleteCategory(Category...categories){
+
+    public void deleteCategory(Category... categories) {
         new DeleteAsyncTask(categoryDao).execute(categories);
     }
 
-    public LiveData<List<Category>> getAllCategoriesLive(){
+    public LiveData<List<Category>> getAllCategoriesLive() {
         return allCategoriesLive;
     }
 
-    private static class InsertAsyncTask extends AsyncTask<Category,Void,Void> {
+    private static class InsertAsyncTask extends AsyncTask<Category, Void, Void> {
         private CategoryDao categoryDao;
+
         public InsertAsyncTask(CategoryDao categoryDao) {
             this.categoryDao = categoryDao;
         }
@@ -45,8 +48,10 @@ public class CategoryRepository {
             return null;
         }
     }
-    private static class UpdateAsyncTask extends AsyncTask<Category,Void,Void> {
+
+    private static class UpdateAsyncTask extends AsyncTask<Category, Void, Void> {
         private CategoryDao categoryDao;
+
         public UpdateAsyncTask(CategoryDao categoryDao) {
             this.categoryDao = categoryDao;
         }
@@ -57,8 +62,10 @@ public class CategoryRepository {
             return null;
         }
     }
-    private static class DeleteAsyncTask extends AsyncTask<Category,Void,Void> {
+
+    private static class DeleteAsyncTask extends AsyncTask<Category, Void, Void> {
         private CategoryDao categoryDao;
+
         public DeleteAsyncTask(CategoryDao categoryDao) {
             this.categoryDao = categoryDao;
         }

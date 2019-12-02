@@ -4,44 +4,34 @@ package com.kailang.wastebook.ui.category;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.Gson;
 import com.kailang.wastebook.R;
 import com.kailang.wastebook.adapters.CategoryDragTouchAdapter;
 import com.kailang.wastebook.data.Entity.Category;
-import com.kailang.wastebook.data.Entity.WasteBook;
-import com.kailang.wastebook.ui.detail.EditFragment;
 import com.yanzhenjie.recyclerview.OnItemClickListener;
-import com.yanzhenjie.recyclerview.OnItemLongClickListener;
 import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 import com.yanzhenjie.recyclerview.touch.OnItemMoveListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 
 
 public class CategoryFragment extends Fragment {
@@ -53,9 +43,9 @@ public class CategoryFragment extends Fragment {
 
     private LiveData<List<Category>> allCategoriesLive;
     private List<Category> allCategories, INCategory, OUTCategory;
-    private SwipeRecyclerView mRecyclerView,mRecyclerView2;
-    private CategoryDragTouchAdapter adapter,adapter2;
-//    private static boolean isInitCategory=false;
+    private SwipeRecyclerView mRecyclerView, mRecyclerView2;
+    private CategoryDragTouchAdapter adapter, adapter2;
+    //    private static boolean isInitCategory=false;
     private FloatingActionButton floatingActionButton;
 
 
@@ -76,11 +66,11 @@ public class CategoryFragment extends Fragment {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
         categoryViewModel.setIndex(index);
-        allCategoriesLive=categoryViewModel.getAllCategoriesLive();
+        allCategoriesLive = categoryViewModel.getAllCategoriesLive();
         allCategoriesLive.observe(this, new Observer<List<Category>>() {
             @Override
             public void onChanged(List<Category> categories) {
-                allCategories=categories;
+                allCategories = categories;
                 //if(categories.size()==0&&!isInitCategory)initCategory();
             }
         });
@@ -96,7 +86,7 @@ public class CategoryFragment extends Fragment {
         categoryViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@NonNull String s) {
-                Log.e("CategoryFragment",s);
+                Log.e("CategoryFragment", s);
                 if (s.contains("1")) {
                     mRecyclerView = root.findViewById(R.id.recyclerView_category);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -108,10 +98,10 @@ public class CategoryFragment extends Fragment {
                         @Override
                         public void onItemClick(View view, int adapterPosition) {
                             String temp = OUTCategory.get(adapterPosition).getName();
-                            if(temp!=null&&!temp.isEmpty()) {
+                            if (temp != null && !temp.isEmpty()) {
                                 Log.e("xxxx", temp);
-                                Intent intent = new Intent(getContext(),CategoryWasteBookFragment.class);
-                                intent.putExtra(CategoryWasteBookFragment.ARG_PARAM1,temp);
+                                Intent intent = new Intent(getContext(), CategoryWasteBookFragment.class);
+                                intent.putExtra(CategoryWasteBookFragment.ARG_PARAM1, temp);
                                 startActivity(intent);
                                 //Navigation.findNavController(get).navigate(R.id.action_categoryFragment_to_categoryWasteBookFragment, bundle);
 //                                getFragmentManager()
@@ -128,13 +118,13 @@ public class CategoryFragment extends Fragment {
                     allCategoriesLive.observe(getViewLifecycleOwner(), new Observer<List<Category>>() {
                         @Override
                         public void onChanged(List<Category> categories) {
-                            OUTCategory=new ArrayList<>();
-                            for(Category c:categories){
+                            OUTCategory = new ArrayList<>();
+                            for (Category c : categories) {
                                 if (c.isType()) {
                                     OUTCategory.add(c);
                                 }
                             }
-                            if(adapter.getItemCount()!=OUTCategory.size()){
+                            if (adapter.getItemCount() != OUTCategory.size()) {
                                 adapter.setAllCategory(OUTCategory);
                                 adapter.notifyDataSetChanged();
                             }
@@ -156,8 +146,8 @@ public class CategoryFragment extends Fragment {
 
 //                            for (Category c:OUTCategory)
 //                                Log.e("xxxxposition",c.getName()+" "+c.getOrder());
-                            for (int i=0;i<OUTCategory.size();i++){
-                                Category category=OUTCategory.get(i);
+                            for (int i = 0; i < OUTCategory.size(); i++) {
+                                Category category = OUTCategory.get(i);
                                 category.setOrder(i);
                                 categoryViewModel.updateCategory(category);
                             }
@@ -182,7 +172,7 @@ public class CategoryFragment extends Fragment {
                         }
                     });
 
-                    floatingActionButton=root.findViewById(R.id.floatingActionButton_category);
+                    floatingActionButton = root.findViewById(R.id.floatingActionButton_category);
 
                     floatingActionButton.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -194,17 +184,17 @@ public class CategoryFragment extends Fragment {
                             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     String tmp;
-                                    tmp =input.getText().toString().trim();
-                                    if(!tmp.isEmpty()){
+                                    tmp = input.getText().toString().trim();
+                                    if (!tmp.isEmpty()) {
                                         Category category = new Category();
-                                        category.setOrder(allCategories.size()+1);
+                                        category.setOrder(allCategories.size() + 1);
                                         category.setName(tmp);
                                         category.setType(true);
                                         category.setIcon("ic_category_out_16");
                                         try {
                                             categoryViewModel.insertCategory(category);
-                                        }catch (Exception e){
-                                            Toast.makeText(getContext(),"添加失败",Toast.LENGTH_SHORT).show();
+                                        } catch (Exception e) {
+                                            Toast.makeText(getContext(), "添加失败", Toast.LENGTH_SHORT).show();
                                         }
                                     }
 
@@ -227,13 +217,13 @@ public class CategoryFragment extends Fragment {
                     allCategoriesLive.observe(getViewLifecycleOwner(), new Observer<List<Category>>() {
                         @Override
                         public void onChanged(List<Category> categories) {
-                            INCategory=new ArrayList<>();
-                            for(Category c:categories){
+                            INCategory = new ArrayList<>();
+                            for (Category c : categories) {
                                 if (!c.isType()) {
                                     INCategory.add(c);
                                 }
                             }
-                            if(adapter2.getItemCount()!=INCategory.size()){
+                            if (adapter2.getItemCount() != INCategory.size()) {
                                 adapter2.setAllCategory(INCategory);
                                 adapter2.notifyDataSetChanged();
                             }
@@ -258,8 +248,8 @@ public class CategoryFragment extends Fragment {
                             adapter2.notifyItemMoved(fromPosition, toPosition);
 
                             //更新数据中的排序
-                            for (int i=0;i<INCategory.size();i++){
-                                Category category=INCategory.get(i);
+                            for (int i = 0; i < INCategory.size(); i++) {
+                                Category category = INCategory.get(i);
                                 category.setOrder(i);
                                 categoryViewModel.updateCategory(category);
                             }
@@ -304,7 +294,7 @@ public class CategoryFragment extends Fragment {
                         }
                     });
 
-                    floatingActionButton=root.findViewById(R.id.floatingActionButton_category);
+                    floatingActionButton = root.findViewById(R.id.floatingActionButton_category);
 
                     floatingActionButton.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -316,17 +306,17 @@ public class CategoryFragment extends Fragment {
                             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     String tmp;
-                                    tmp =input.getText().toString().trim();
-                                    if(!tmp.isEmpty()){
+                                    tmp = input.getText().toString().trim();
+                                    if (!tmp.isEmpty()) {
                                         Category category = new Category();
-                                        category.setOrder(allCategories.size()+1);
+                                        category.setOrder(allCategories.size() + 1);
                                         category.setName(tmp);
                                         category.setType(false);
                                         category.setIcon("ic_category_in_5");
                                         try {
                                             categoryViewModel.insertCategory(category);
-                                        }catch (Exception e){
-                                            Toast.makeText(getContext(),"添加失败",Toast.LENGTH_SHORT).show();
+                                        } catch (Exception e) {
+                                            Toast.makeText(getContext(), "添加失败", Toast.LENGTH_SHORT).show();
                                         }
                                     }
 

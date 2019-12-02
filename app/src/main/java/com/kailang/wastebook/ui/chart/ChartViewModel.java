@@ -14,11 +14,13 @@ import java.util.List;
 public class ChartViewModel extends AndroidViewModel {
 
     private WasteBookRepository wasteBookRepository;
+
     public ChartViewModel(@NonNull Application application) {
         super(application);
         wasteBookRepository = new WasteBookRepository(application);
     }
-    public LiveData<List<WasteBook>> getAllWasteBookLive(){
+
+    public LiveData<List<WasteBook>> getAllWasteBookLive() {
         return wasteBookRepository.getAllWasteBooksLiveByAmount();
     }
 }

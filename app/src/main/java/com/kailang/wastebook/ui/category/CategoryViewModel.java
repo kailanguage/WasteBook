@@ -17,9 +17,10 @@ import java.util.List;
 public class CategoryViewModel extends AndroidViewModel {
     private CategoryRepository categoryRepository;
     private MutableLiveData<Integer> mIndex = new MutableLiveData<>();
+
     public CategoryViewModel(@NonNull Application application) {
         super(application);
-        categoryRepository=new CategoryRepository(application);
+        categoryRepository = new CategoryRepository(application);
     }
 
     private LiveData<String> mText = Transformations.map(mIndex, new Function<Integer, String>() {
@@ -37,16 +38,19 @@ public class CategoryViewModel extends AndroidViewModel {
         return mText;
     }
 
-    public LiveData<List<Category>> getAllCategoriesLive(){
+    public LiveData<List<Category>> getAllCategoriesLive() {
         return categoryRepository.getAllCategoriesLive();
     }
-    public void insertCategory(Category...categories){
+
+    public void insertCategory(Category... categories) {
         categoryRepository.insertCategory(categories);
     }
-    public void updateCategory(Category...categories){
+
+    public void updateCategory(Category... categories) {
         categoryRepository.updateCategory(categories);
     }
-    public void deleteCategory(Category...categories){
+
+    public void deleteCategory(Category... categories) {
         categoryRepository.deleteCategory(categories);
     }
 }

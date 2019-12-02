@@ -7,8 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,18 +15,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.kailang.wastebook.R;
-
-
-import com.kailang.wastebook.adapters.WasteBookAdapter;
 import com.kailang.wastebook.data.Entity.Category;
 import com.kailang.wastebook.data.Entity.WasteBook;
 import com.kailang.wastebook.databinding.FragmentAddBinding;
 import com.kailang.wastebook.ui.category.CategoryActivity;
-import com.kailang.wastebook.ui.category.CategoryViewModel;
 import com.kailang.wastebook.ui.detail.EditFragment;
 import com.wihaohao.PageGridView;
 
@@ -36,7 +29,6 @@ import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -99,7 +91,7 @@ public class AddFragment extends Fragment {
             Bundle savedInstanceState) {
         Gson gson = new Gson();
         Intent intent = getActivity().getIntent();
-        String wasteBookJson=intent.getStringExtra(EditFragment.WASTEBOOK_EDIT);
+        String wasteBookJson = intent.getStringExtra(EditFragment.WASTEBOOK_EDIT);
 //        String wasteBookJson = getArguments().getString(EditFragment.WASTEBOOK_EDIT);
         if (wasteBookJson != null) {
             wasteBook = gson.fromJson(wasteBookJson, WasteBook.class);
@@ -127,7 +119,7 @@ public class AddFragment extends Fragment {
                             if (position == mList.size() - 1) {
                                 startActivity(new Intent(requireActivity(), CategoryActivity.class));
                             } else {
-                                if (addViewModel.getWasteBookEdit()==null) {
+                                if (addViewModel.getWasteBookEdit() == null) {
                                     addViewModel.setmAmountTextClear();
                                 }
                                 addViewModel.setType(mList.get(position).getName());
@@ -149,7 +141,7 @@ public class AddFragment extends Fragment {
                                 //跳转
                                 startActivity(new Intent(requireActivity(), CategoryActivity.class));
                             } else {
-                                if (addViewModel.getWasteBookEdit()==null) {
+                                if (addViewModel.getWasteBookEdit() == null) {
                                     addViewModel.setmAmountTextClear();
                                 }
                                 addViewModel.setType(mList2.get(position).getName());

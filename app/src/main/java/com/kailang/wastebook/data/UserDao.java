@@ -10,10 +10,11 @@ import androidx.room.Update;
 import com.kailang.wastebook.data.Entity.User;
 
 import java.util.List;
+
 @Dao
 public interface UserDao {
     @Insert
-    void insertUser(User...users);
+    void insertUser(User... users);
 
     @Update
     void updateUser(User user);
@@ -25,5 +26,5 @@ public interface UserDao {
     void deleteAllUser();
 
     @Query("SELECT * FROM user ")
-    LiveData<List<User>>getUserLive();
+    LiveData<List<User>> getUserLive();
 }

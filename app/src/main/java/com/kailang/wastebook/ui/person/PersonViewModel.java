@@ -19,19 +19,23 @@ public class PersonViewModel extends AndroidViewModel {
 
     public PersonViewModel(@NonNull Application application) {
         super(application);
-        wasteBookRepository=new WasteBookRepository(application);
-        categoryRepository= new CategoryRepository(application);
+        wasteBookRepository = new WasteBookRepository(application);
+        categoryRepository = new CategoryRepository(application);
     }
-    public LiveData<List<WasteBook>> getAllWasteBookLive(){
+
+    public LiveData<List<WasteBook>> getAllWasteBookLive() {
         return wasteBookRepository.getAllWasteBooksLive();
     }
-    public LiveData<List<Category>> getAllCategoriesLive(){
+
+    public LiveData<List<Category>> getAllCategoriesLive() {
         return categoryRepository.getAllCategoriesLive();
     }
-    public void insertWasteBook(WasteBook... wasteBooks){
+
+    public void insertWasteBook(WasteBook... wasteBooks) {
         wasteBookRepository.insertWasteBook(wasteBooks);
     }
-    public void deleteAllWasteBooks(){
+
+    public void deleteAllWasteBooks() {
         wasteBookRepository.deleteAllWasteBooks();
     }
 }

@@ -44,14 +44,15 @@ public class CategoryDragTouchAdapter extends CategoryBaseAdapter<CategoryDragTo
     private List<String> mDataList;
     private List<Category> categories;
     private Context context;
+
     public CategoryDragTouchAdapter(Context context, SwipeRecyclerView menuRecyclerView) {
         super(context);
-        this.context=context;
+        this.context = context;
         this.mMenuRecyclerView = menuRecyclerView;
     }
 
-    public void setAllCategory(List<Category> categories){
-        this.categories=categories;
+    public void setAllCategory(List<Category> categories) {
+        this.categories = categories;
     }
 
     @Override
@@ -62,7 +63,7 @@ public class CategoryDragTouchAdapter extends CategoryBaseAdapter<CategoryDragTo
 
     @Override
     public int getItemCount() {
-        return categories==null?0:categories.size();
+        return categories == null ? 0 : categories.size();
         //return mDataList == null ? 0 : mDataList.size();
     }
 
@@ -77,7 +78,7 @@ public class CategoryDragTouchAdapter extends CategoryBaseAdapter<CategoryDragTo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         //holder.setData(mDataList.get(position));
-        holder.setData(context,categories.get(position));
+        holder.setData(context, categories.get(position));
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener {
@@ -89,7 +90,7 @@ public class CategoryDragTouchAdapter extends CategoryBaseAdapter<CategoryDragTo
         public ViewHolder(View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_title);
-            imageView=itemView.findViewById(R.id.iv_icon);
+            imageView = itemView.findViewById(R.id.iv_icon);
             itemView.findViewById(R.id.iv_touch).setOnTouchListener(this);
         }
 
@@ -98,12 +99,12 @@ public class CategoryDragTouchAdapter extends CategoryBaseAdapter<CategoryDragTo
             int res_ID;
             try {
                 field = R.drawable.class.getField(category.getIcon());
-                res_ID= field.getInt(field.getName());
+                res_ID = field.getInt(field.getName());
             } catch (NoSuchFieldException e) {
-                res_ID=R.drawable.ic_category_out_1;
+                res_ID = R.drawable.ic_category_out_1;
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
-                res_ID=R.drawable.ic_category_out_1;
+                res_ID = R.drawable.ic_category_out_1;
                 e.printStackTrace();
             }
             this.tvTitle.setText(category.getName());

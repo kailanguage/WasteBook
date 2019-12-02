@@ -2,21 +2,16 @@ package com.kailang.wastebook.ui.category;
 
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.kailang.wastebook.R;
 import com.kailang.wastebook.adapters.WasteBookAdapter;
@@ -62,9 +57,9 @@ public class CategoryWasteBookFragment extends AppCompatActivity {
         if (getIntent() != null) {
             categoryWasteBook = getIntent().getStringExtra(ARG_PARAM1);
         }
-        tv_categoryWasteBook=findViewById(R.id.textView_category_wb_total);
-        tv_category_mount_wb=findViewById(R.id.textView_category_mount_wb);
-        imageViewBack=findViewById(R.id.imageView_wb_back);
+        tv_categoryWasteBook = findViewById(R.id.textView_category_wb_total);
+        tv_category_mount_wb = findViewById(R.id.textView_category_mount_wb);
+        imageViewBack = findViewById(R.id.imageView_wb_back);
         imageViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,26 +70,26 @@ public class CategoryWasteBookFragment extends AppCompatActivity {
         detailViewModel = ViewModelProviders.of(this).get(DetailViewModel.class);
         recyclerView = findViewById(R.id.recyclerView_categoryWb);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        wasteBookAdapter = new WasteBookAdapter(this,false);
+        wasteBookAdapter = new WasteBookAdapter(this, false);
         recyclerView.setAdapter(wasteBookAdapter);
 
         detailViewModel.getAllWasteBookLive().observe(this, new Observer<List<WasteBook>>() {
             @Override
             public void onChanged(List<WasteBook> wasteBooks) {
-                if(wasteBooks!=null){
+                if (wasteBooks != null) {
                     DecimalFormat mAmountFormat = new DecimalFormat("0.00");
-                    int mount=0;
-                    double total=0.0;
-                    selectedWasteBooks=new ArrayList<>();
-                    for(WasteBook w:wasteBooks){
-                        if(w.getCategory().equals(categoryWasteBook)){
+                    int mount = 0;
+                    double total = 0.0;
+                    selectedWasteBooks = new ArrayList<>();
+                    for (WasteBook w : wasteBooks) {
+                        if (w.getCategory().equals(categoryWasteBook)) {
                             selectedWasteBooks.add(w);
-                            total+=w.getAmount();
+                            total += w.getAmount();
                             mount++;
                         }
                     }
-                    tv_category_mount_wb.setText("总计："+mount+"条账单");
-                    tv_categoryWasteBook.setText("共 "+mAmountFormat.format(total)+"元");
+                    tv_category_mount_wb.setText("总计：" + mount + "条账单");
+                    tv_categoryWasteBook.setText("共 " + mAmountFormat.format(total) + "元");
                     wasteBookAdapter.setAllWasteBook(selectedWasteBooks);
                     wasteBookAdapter.notifyDataSetChanged();
                 }

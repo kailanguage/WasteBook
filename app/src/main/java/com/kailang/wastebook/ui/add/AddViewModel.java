@@ -2,39 +2,32 @@ package com.kailang.wastebook.ui.add;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.arch.core.util.Function;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
-import androidx.navigation.Navigation;
 
 import com.kailang.wastebook.MainActivity;
 import com.kailang.wastebook.R;
 import com.kailang.wastebook.data.CategoryRepository;
 import com.kailang.wastebook.data.Entity.Category;
 import com.kailang.wastebook.data.Entity.WasteBook;
-import com.kailang.wastebook.data.UserRepository;
 import com.kailang.wastebook.data.WasteBookRepository;
 import com.kailang.wastebook.utils.CommonUtils;
 import com.kailang.wastebook.utils.DatePickUtils;
 import com.kailang.wastebook.utils.DateToLongUtils;
 import com.kailang.wastebook.utils.ResUtils;
-import com.kailang.wastebook.utils.UIUtils;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -46,10 +39,10 @@ public class AddViewModel extends AndroidViewModel {
     private MutableLiveData<Integer> mIndex = new MutableLiveData<>();
     private SimpleDateFormat mDateFormat;
     private DecimalFormat mAmountFormat = new DecimalFormat("0.00");
-    private ObservableField<String> mDateText=new ObservableField<>();
-    private ObservableField<String> mAmountText=new ObservableField<>();
-    private ObservableField<String> mDesc=new ObservableField<>();
-    private ObservableField<String> mType=new ObservableField<>();
+    private ObservableField<String> mDateText = new ObservableField<>();
+    private ObservableField<String> mAmountText = new ObservableField<>();
+    private ObservableField<String> mDesc = new ObservableField<>();
+    private ObservableField<String> mType = new ObservableField<>();
     private String iconId;
     private long mDate;
     private double mAmount;
@@ -63,12 +56,14 @@ public class AddViewModel extends AndroidViewModel {
                 application, R.string.date_format_y_m_d) + " HH:mm", Locale.getDefault());
         mDate = System.currentTimeMillis();
         mDateText.set(mDateFormat.format(new Date(mDate)));
-        wasteBookRepository=new WasteBookRepository(application);
-        categoryRepository=new CategoryRepository(application);
+        wasteBookRepository = new WasteBookRepository(application);
+        categoryRepository = new CategoryRepository(application);
     }
 
 
-    /** 消费说明点击 */
+    /**
+     * 消费说明点击
+     */
     public void onDescClick(Activity activity) {
 
         EditText input = new EditText(activity);
@@ -79,15 +74,17 @@ public class AddViewModel extends AndroidViewModel {
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 String tmp;
-                tmp =input.getText().toString().trim();
-                if(!tmp.isEmpty()){
+                tmp = input.getText().toString().trim();
+                if (!tmp.isEmpty()) {
                     setmDesc(tmp);
                 }
             }
         }).show();
     }
 
-    /** 消费记录时间点击 */
+    /**
+     * 消费记录时间点击
+     */
     public void onDateClick(Activity activity) {
         DatePickUtils.showDatePickDialog(activity,
                 mDate,
@@ -107,19 +104,23 @@ public class AddViewModel extends AndroidViewModel {
                 });
     }
 
-    /** 键盘数字点击 */
+    /**
+     * 键盘数字点击
+     */
     public void onNumberClick(String number) {
-            String amount = mAmountText.get();
-            amount = TextUtils.isEmpty(amount) ? "" : amount;
-            if ("0".equals(amount)) {
-                amount = "";
-            }
-            amount += number;
-            mAmountText.set(amount);
-            mAmount = CommonUtils.string2float(amount, 0);
+        String amount = mAmountText.get();
+        amount = TextUtils.isEmpty(amount) ? "" : amount;
+        if ("0".equals(amount)) {
+            amount = "";
+        }
+        amount += number;
+        mAmountText.set(amount);
+        mAmount = CommonUtils.string2float(amount, 0);
     }
 
-    /** 键盘删除点击 */
+    /**
+     * 键盘删除点击
+     */
     public void onDeleteClick() {
         String amount = mAmountText.get();
         amount = TextUtils.isEmpty(amount) ? "" : amount;
@@ -133,13 +134,17 @@ public class AddViewModel extends AndroidViewModel {
         mAmount = CommonUtils.string2float(amount, 0);
     }
 
-    /** 键盘清除点击 */
+    /**
+     * 键盘清除点击
+     */
     public void onClearClick() {
         mAmountText.set("0");
         mAmount = 0;
     }
 
-    /** 键盘 . 点击 */
+    /**
+     * 键盘 . 点击
+     */
     public void onDotClick() {
         String amount = mAmountText.get();
         amount = TextUtils.isEmpty(amount) ? "" : amount;
@@ -149,15 +154,18 @@ public class AddViewModel extends AndroidViewModel {
         mAmountText.set(amount);
         mAmount = CommonUtils.string2float(amount, 0);
     }
-    /** 确定点击 */
+
+    /**
+     * 确定点击
+     */
     public void onEnterClick(Activity activity) {
-        if(getType().get()==null||getAmountText().get()==null||getAmountText().get().isEmpty()||iconId==null){
-            Toast.makeText(activity,"请输入完整的信息",Toast.LENGTH_SHORT).show();
-        }else {
-            Boolean wasteBookType=true;
-            if (getText().getValue().contains("2"))wasteBookType=false;
-            Log.e("getDesc",getDesc().get());
-            if(wasteBookEdit!=null){
+        if (getType().get() == null || getAmountText().get() == null || getAmountText().get().isEmpty() || iconId == null) {
+            Toast.makeText(activity, "请输入完整的信息", Toast.LENGTH_SHORT).show();
+        } else {
+            Boolean wasteBookType = true;
+            if (getText().getValue().contains("2")) wasteBookType = false;
+            Log.e("getDesc", getDesc().get());
+            if (wasteBookEdit != null) {
                 wasteBookEdit.setAmount(Double.parseDouble(getAmountText().get()));
                 wasteBookEdit.setIcon(iconId);
                 wasteBookEdit.setCategory(getType().get());
@@ -165,8 +173,8 @@ public class AddViewModel extends AndroidViewModel {
                 wasteBookEdit.setTime(mDate);
                 wasteBookEdit.setType(wasteBookType);
                 updateDate(wasteBookEdit);
-                Toast.makeText(activity,"修改成功!",Toast.LENGTH_SHORT).show();
-            }else {
+                Toast.makeText(activity, "修改成功!", Toast.LENGTH_SHORT).show();
+            } else {
                 WasteBook wasteBook = new WasteBook(wasteBookType, Double.parseDouble(getAmountText().get()), getType().get(), iconId, mDate, getDesc().get());
                 saveData(wasteBook);
             }
@@ -175,22 +183,25 @@ public class AddViewModel extends AndroidViewModel {
             activity.startActivity(intent);
         }
     }
-    public void setIconId(String iconId){
-        this.iconId=iconId;
+
+    public void setIconId(String iconId) {
+        this.iconId = iconId;
     }
 
-    private void updateDate(WasteBook wasteBook){
-        Log.e("xxxxxx","update");
+    private void updateDate(WasteBook wasteBook) {
+        Log.e("xxxxxx", "update");
         wasteBookRepository.updateWasteBook(wasteBook);
     }
+
     private void saveData(WasteBook wasteBook) {
-        Log.e("xxxxxx","insert");
-       wasteBookRepository.insertWasteBook(wasteBook);
+        Log.e("xxxxxx", "insert");
+        wasteBookRepository.insertWasteBook(wasteBook);
     }
 
-    public LiveData<List<Category>> getAllCategoriesLive(){
+    public LiveData<List<Category>> getAllCategoriesLive() {
         return categoryRepository.getAllCategoriesLive();
     }
+
     public ObservableField<String> getDateText() {
         return mDateText;
     }
@@ -204,7 +215,6 @@ public class AddViewModel extends AndroidViewModel {
     }
 
 
-
     public ObservableField<String> getAmountText() {
         return mAmountText;
     }
@@ -214,7 +224,7 @@ public class AddViewModel extends AndroidViewModel {
     }
 
     public ObservableField<String> getDesc() {
-        if(mDesc.get()==null)
+        if (mDesc.get() == null)
             mDesc.set("");
         return mDesc;
     }
@@ -251,8 +261,8 @@ public class AddViewModel extends AndroidViewModel {
         return wasteBookEdit;
     }
 
-    public void setWasteBook(WasteBook wasteBook){
-        this.wasteBookEdit=wasteBook;
+    public void setWasteBook(WasteBook wasteBook) {
+        this.wasteBookEdit = wasteBook;
         this.setType(wasteBook.getCategory());
         this.setmAmountText(mAmountFormat.format(wasteBook.getAmount()));
         this.setmDesc(wasteBook.getNote());

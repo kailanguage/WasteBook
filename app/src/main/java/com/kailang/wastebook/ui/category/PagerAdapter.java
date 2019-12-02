@@ -9,7 +9,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.kailang.wastebook.R;
-import com.kailang.wastebook.ui.add.AddFragment;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to

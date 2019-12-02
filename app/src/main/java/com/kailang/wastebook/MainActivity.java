@@ -3,14 +3,6 @@ package com.kailang.wastebook;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.kailang.wastebook.data.Entity.Category;
-import com.kailang.wastebook.data.Entity.User;
-import com.kailang.wastebook.login.LoginActivity;
-import com.kailang.wastebook.login.LoginViewModel;
-import com.kailang.wastebook.ui.category.CategoryViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -19,6 +11,13 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.kailang.wastebook.data.Entity.Category;
+import com.kailang.wastebook.data.Entity.User;
+import com.kailang.wastebook.login.LoginActivity;
+import com.kailang.wastebook.login.LoginViewModel;
+import com.kailang.wastebook.ui.category.CategoryViewModel;
 
 import java.util.List;
 

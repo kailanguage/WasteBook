@@ -3,9 +3,8 @@ package com.kailang.wastebook.data.Entity;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-
-import java.util.Date;
 
 @Entity(tableName = "WasteBook")
 public class WasteBook {
@@ -43,8 +42,8 @@ public class WasteBook {
         this.time = time;
         this.note = note;
     }
+    @Ignore
     public WasteBook(){
-
     }
 
     public int getId() {

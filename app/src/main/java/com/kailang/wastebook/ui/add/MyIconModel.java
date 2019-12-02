@@ -27,17 +27,18 @@ public class MyIconModel implements PageGridView.ItemModel {
         this.iconId = iconId;
     }
 
-    public MyIconModel(String name, String iconName,int iconId) {
+    public MyIconModel(String name, String iconName, int iconId) {
         this.name = name;
-        this.iconName=iconName;
+        this.iconName = iconName;
         this.iconId = iconId;
     }
-    public MyIconModel(String name,int iconId){
+
+    public MyIconModel(String name, int iconId) {
         this.name = name;
         this.iconId = iconId;
     }
 
-    public String getIconName(){
+    public String getIconName() {
         return iconName;
     }
 

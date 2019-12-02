@@ -13,15 +13,17 @@ import java.util.List;
 
 public class LoginViewModel extends AndroidViewModel {
     private UserRepository userRepository;
+
     public LoginViewModel(@NonNull Application application) {
         super(application);
-        userRepository =new UserRepository(application);
+        userRepository = new UserRepository(application);
     }
 
-    public LiveData<List<User>> getAllUserLive(){
+    public LiveData<List<User>> getAllUserLive() {
         return userRepository.getAllUsersLive();
     }
-    public void insertUser(User...users){
+
+    public void insertUser(User... users) {
         userRepository.insertUser(users);
     }
 }

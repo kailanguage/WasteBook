@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -30,14 +30,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.kailang.wastebook.R;
 import com.kailang.wastebook.adapters.WasteBookAdapter;
-import com.kailang.wastebook.data.Entity.Category;
 import com.kailang.wastebook.data.Entity.WasteBook;
 import com.kailang.wastebook.ui.add.AddActivity;
 import com.kailang.wastebook.ui.category.CategoryActivity;
 import com.kailang.wastebook.utils.DateToLongUtils;
 
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,13 +46,13 @@ public class DetailFragment extends Fragment {
     private RecyclerView recyclerView;
     private WasteBookAdapter wasteBookAdapter;
     private LiveData<List<WasteBook>> wasteBooks;
-    private MutableLiveData<List<WasteBook>> selectedWasteBooks=new MutableLiveData<>();
+    private MutableLiveData<List<WasteBook>> selectedWasteBooks = new MutableLiveData<>();
     private List<WasteBook> allWasteBooks;
     private DetailViewModel detailViewModel;
-    private boolean isAll=false,isOUT=false;
-    private Double IN=0.0,OUT=0.0,TOTAL=0.0;
-    private long start,end;
-    private String TAG="DetailFragment";
+    private boolean isAll = false, isOUT = false;
+    private Double IN = 0.0, OUT = 0.0, TOTAL = 0.0;
+    private long start, end;
+    private String TAG = "DetailFragment";
     private DecimalFormat mAmountFormat = new DecimalFormat("0.00");
 
     //选择器
@@ -63,7 +61,7 @@ public class DetailFragment extends Fragment {
     private ArrayList<String> options1Items_year = new ArrayList<>();
     private ArrayList<String> options1Items_moonth = new ArrayList<>();
 
-    private TextView tv_IN,tv_OUT,tv_TOTAL;
+    private TextView tv_IN, tv_OUT, tv_TOTAL;
 
     public DetailFragment() {
         setHasOptionsMenu(true);
@@ -103,13 +101,13 @@ public class DetailFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 final String pattern = newText.trim();
                 wasteBooks.removeObservers(getViewLifecycleOwner());
-                wasteBooks=detailViewModel.findWasteBookWithPattern(pattern);
+                wasteBooks = detailViewModel.findWasteBookWithPattern(pattern);
                 wasteBooks.observe(getViewLifecycleOwner(), new Observer<List<WasteBook>>() {
                     @Override
                     public void onChanged(List<WasteBook> wasteBooks) {
                         int temp = wasteBookAdapter.getItemCount();
                         wasteBookAdapter.setAllWasteBook(wasteBooks);
-                        if(temp!=wasteBooks.size()){
+                        if (temp != wasteBooks.size()) {
                             wasteBookAdapter.notifyDataSetChanged();
                         }
                     }
@@ -125,9 +123,9 @@ public class DetailFragment extends Fragment {
 
         detailViewModel = ViewModelProviders.of(this).get(DetailViewModel.class);
         View root = inflater.inflate(R.layout.fragment_detail, container, false);
-        tv_IN=root.findViewById(R.id.sum_in);
-        tv_OUT=root.findViewById(R.id.sum_out);
-        tv_TOTAL=root.findViewById(R.id.balance);
+        tv_IN = root.findViewById(R.id.sum_in);
+        tv_OUT = root.findViewById(R.id.sum_out);
+        tv_TOTAL = root.findViewById(R.id.balance);
 
         //选择器
         initCustomOptionPicker();
@@ -153,10 +151,10 @@ public class DetailFragment extends Fragment {
                         String year = options1Items_year.get(options2);
                         String month = options1Items_moonth.get(options3);
                         String type = options1Items_type.get(options1);
-                        if(month.equals("-"))month="";
-                        if(year.contains("近"))month="";
-                        selector(type,year,month);
-                        select.setText(year+" "+month+" "+type+"▼");
+                        if (month.equals("-")) month = "";
+                        if (year.contains("近")) month = "";
+                        selector(type, year, month);
+                        select.setText(year + " " + month + " " + type + "▼");
                     }
 
                 }).setSubmitText("确定")
@@ -177,7 +175,7 @@ public class DetailFragment extends Fragment {
         detailViewModel = ViewModelProviders.of(getActivity()).get(DetailViewModel.class);
         recyclerView = requireActivity().findViewById(R.id.recyclerView_memo);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        wasteBookAdapter = new WasteBookAdapter(requireContext(),true);
+        wasteBookAdapter = new WasteBookAdapter(requireContext(), true);
         recyclerView.setAdapter(wasteBookAdapter);
 
         //筛选，更新UI
@@ -186,16 +184,16 @@ public class DetailFragment extends Fragment {
             public void onChanged(List<WasteBook> wasteBooks) {
 //                for(WasteBook w:wasteBooks)
 //                    Log.e(TAG,"selected "+w.getTime());
-                int tmp=wasteBookAdapter.getItemCount();
+                int tmp = wasteBookAdapter.getItemCount();
                 wasteBookAdapter.setAllWasteBook(wasteBooks);
-                if(tmp!=wasteBooks.size()) {
+                if (tmp != wasteBooks.size()) {
                     wasteBookAdapter.notifyDataSetChanged();
                 }
-                tv_IN.setText("+ "+IN);
-                tv_OUT.setText("- "+OUT);
-                TOTAL=IN-OUT;
+                tv_IN.setText("+ " + IN);
+                tv_OUT.setText("- " + OUT);
+                TOTAL = IN - OUT;
 //                if(TOTAL>0)
-                tv_TOTAL.setText(""+mAmountFormat.format(TOTAL));
+                tv_TOTAL.setText("" + mAmountFormat.format(TOTAL));
 //                else tv_TOTAL.setText("无");
             }
         });
@@ -211,16 +209,18 @@ public class DetailFragment extends Fragment {
                 if (tmp != wasteBooks.size())
                     wasteBookAdapter.notifyDataSetChanged();
 
-                IN=0.0;OUT=0.0;TOTAL=0.0;
-                for(WasteBook w:wasteBooks){
-                    if(w.isType())OUT+=w.getAmount();
-                    else IN+=w.getAmount();
+                IN = 0.0;
+                OUT = 0.0;
+                TOTAL = 0.0;
+                for (WasteBook w : wasteBooks) {
+                    if (w.isType()) OUT += w.getAmount();
+                    else IN += w.getAmount();
                 }
-                tv_IN.setText("+ "+IN);
-                tv_OUT.setText("- "+OUT);
-                TOTAL=IN-OUT;
+                tv_IN.setText("+ " + IN);
+                tv_OUT.setText("- " + OUT);
+                TOTAL = IN - OUT;
 //                if(TOTAL>0)
-                tv_TOTAL.setText(""+mAmountFormat.format(TOTAL));
+                tv_TOTAL.setText("" + mAmountFormat.format(TOTAL));
 //                else tv_TOTAL.setText("无");
             }
         });
@@ -257,40 +257,42 @@ public class DetailFragment extends Fragment {
         options1Items_year.add("近1个月");
         options1Items_year.add("近3个月");
         options1Items_year.add("近6个月");
-        for(int i=2019;i>=2000;i--){
-            options1Items_year.add(i+"年");
+        for (int i = 2019; i >= 2000; i--) {
+            options1Items_year.add(i + "年");
         }
         //选项3
         options1Items_moonth.add("-");
-        for(int i=1;i<=12;i++){
-            options1Items_moonth.add(i+"月");
+        for (int i = 1; i <= 12; i++) {
+            options1Items_moonth.add(i + "月");
         }
     }
 
-    public void setSelectedWasteBook(){
-        List<WasteBook> wasteBookList=new ArrayList<>();
-        IN=0.0;OUT=0.0;TOTAL=0.0;
-        if(allWasteBooks!=null){
-            if(isAll){
-                for (WasteBook w:allWasteBooks){
-                    if(w.getTime()<=start&&w.getTime()>=end){
+    public void setSelectedWasteBook() {
+        List<WasteBook> wasteBookList = new ArrayList<>();
+        IN = 0.0;
+        OUT = 0.0;
+        TOTAL = 0.0;
+        if (allWasteBooks != null) {
+            if (isAll) {
+                for (WasteBook w : allWasteBooks) {
+                    if (w.getTime() <= start && w.getTime() >= end) {
                         wasteBookList.add(w);
-                        if(w.isType())OUT+=w.getAmount();
-                        else IN+=w.getAmount();
+                        if (w.isType()) OUT += w.getAmount();
+                        else IN += w.getAmount();
                     }
                 }
-            }else if(isOUT){
-                for (WasteBook w:allWasteBooks){
-                    if(w.isType()&&w.getTime()<=start&&w.getTime()>=end){
+            } else if (isOUT) {
+                for (WasteBook w : allWasteBooks) {
+                    if (w.isType() && w.getTime() <= start && w.getTime() >= end) {
                         wasteBookList.add(w);
-                        OUT+=w.getAmount();
+                        OUT += w.getAmount();
                     }
                 }
-            }else {
-                for (WasteBook w:allWasteBooks){
-                    if(!w.isType()&&w.getTime()<=start&&w.getTime()>=end){
+            } else {
+                for (WasteBook w : allWasteBooks) {
+                    if (!w.isType() && w.getTime() <= start && w.getTime() >= end) {
                         wasteBookList.add(w);
-                        IN+=w.getAmount();
+                        IN += w.getAmount();
                     }
                 }
             }
@@ -300,62 +302,62 @@ public class DetailFragment extends Fragment {
 
 
     private void selector(String type, String year, String month) {
-        switch (type){
+        switch (type) {
             case "全部":
-               isAll=true;
-               dealStartEnd(type,year,month);
+                isAll = true;
+                dealStartEnd(type, year, month);
                 break;
             case "支出":
-                isOUT=true;
-                isAll=false;
-                dealStartEnd(type,year,month);
+                isOUT = true;
+                isAll = false;
+                dealStartEnd(type, year, month);
                 break;
             case "收入":
-                isOUT=false;
-                isAll=false;
-                dealStartEnd(type,year,month);
+                isOUT = false;
+                isAll = false;
+                dealStartEnd(type, year, month);
                 break;
         }
         //开始筛选
         setSelectedWasteBook();
     }
 
-    private void dealStartEnd(String type, String year, String month){
+    private void dealStartEnd(String type, String year, String month) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        if(year.contains("近")){
-            start=DateToLongUtils.dateToLong(sdf.format(date));
-            if(year.contains("1")){
+        if (year.contains("近")) {
+            start = DateToLongUtils.dateToLong(sdf.format(date));
+            if (year.contains("1")) {
                 cal.add(Calendar.MONTH, -1);
-                end=DateToLongUtils.dateToLong(sdf.format(cal.getTime()));
-                Log.e("xxxxxxxxxxx",start+" "+end+" "+year);
-            }else if(year.contains("3")){
+                end = DateToLongUtils.dateToLong(sdf.format(cal.getTime()));
+                Log.e("xxxxxxxxxxx", start + " " + end + " " + year);
+            } else if (year.contains("3")) {
                 cal.add(Calendar.MONTH, -3);
-                end=DateToLongUtils.dateToLong(sdf.format(cal.getTime()));
-                Log.e("xxxxxxxxxxx",start+" "+end+" "+year);
-            }else if(year.contains("6")){
+                end = DateToLongUtils.dateToLong(sdf.format(cal.getTime()));
+                Log.e("xxxxxxxxxxx", start + " " + end + " " + year);
+            } else if (year.contains("6")) {
                 cal.add(Calendar.MONTH, -6);
-                end=DateToLongUtils.dateToLong(sdf.format(cal.getTime()));
-                Log.e("xxxxxxxxxxx",start+" "+end+" "+year);
+                end = DateToLongUtils.dateToLong(sdf.format(cal.getTime()));
+                Log.e("xxxxxxxxxxx", start + " " + end + " " + year);
             }
-        }else {
+        } else {
             //全年,否则月
-            int startYear =Integer.parseInt(year.substring(0,4));
-            if(month.isEmpty()){
-                end=DateToLongUtils.dateToLong(startYear+"-1-1 00:00:00");
-                start=DateToLongUtils.dateToLong(startYear+"-12-31 23:59:59");
-                Log.e("xxxxxxxxxxx",start+" "+end+" "+startYear);
-            }else{
-                int startMonth=Integer.parseInt(month.substring(0,month.length()-1));
-                date.setTime(DateToLongUtils.dateToLong(startYear+"-"+startMonth+"-1 00:00:00"));
+            int startYear = Integer.parseInt(year.substring(0, 4));
+            if (month.isEmpty()) {
+                end = DateToLongUtils.dateToLong(startYear + "-1-1 00:00:00");
+                start = DateToLongUtils.dateToLong(startYear + "-12-31 23:59:59");
+                Log.e("xxxxxxxxxxx", start + " " + end + " " + startYear);
+            } else {
+                int startMonth = Integer.parseInt(month.substring(0, month.length() - 1));
+                date.setTime(DateToLongUtils.dateToLong(startYear + "-" + startMonth + "-1 00:00:00"));
                 cal.setTime(date);
-                Log.e("xxxxxxxxxx",sdf.format(cal.getTime()));
-                end=cal.getTimeInMillis();
+                Log.e("xxxxxxxxxx", sdf.format(cal.getTime()));
+                end = cal.getTimeInMillis();
                 cal.add(Calendar.MONTH, 1);
-                start=cal.getTimeInMillis();
-                Log.e("xxxxxxxxxxx",sdf.format(cal.getTime()));
+                start = cal.getTimeInMillis();
+                Log.e("xxxxxxxxxxx", sdf.format(cal.getTime()));
             }
         }
     }

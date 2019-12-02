@@ -7,7 +7,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.kailang.wastebook.R;
-import com.kailang.wastebook.ui.add.PagerAdapter;
 
 public class AddActivity extends AppCompatActivity {
     @Override

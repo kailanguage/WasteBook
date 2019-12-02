@@ -64,14 +64,14 @@ public class RegisterActivity extends AppCompatActivity {
                 String userName = etUsername.getText().toString().trim();
                 String password = etPassword.getText().toString().trim();
                 String secondPassword = etSecondPassword.getText().toString().trim();
-                Log.e("RegisterActivity",userName+" "+password+" "+secondPassword);
+                Log.e("RegisterActivity", userName + " " + password + " " + secondPassword);
                 if (userName.isEmpty() || password.isEmpty() || secondPassword.isEmpty()) {
                     Toast.makeText(RegisterActivity.this, "请输入完整的注册信息！", Toast.LENGTH_SHORT).show();
                 } else {
                     if (!password.equals(secondPassword)) {
                         Toast.makeText(RegisterActivity.this, "重复密码错误！", Toast.LENGTH_SHORT).show();
                     } else {
-                        if (userList != null&&!userList.isEmpty()) {
+                        if (userList != null && !userList.isEmpty()) {
                             for (User u : userList) {
                                 if (u.getId().equals(userName)) {
                                     Toast.makeText(RegisterActivity.this, "已存在的用户，请登录！", Toast.LENGTH_SHORT).show();

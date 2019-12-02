@@ -10,6 +10,7 @@ import androidx.room.Update;
 import com.kailang.wastebook.data.Entity.WasteBook;
 
 import java.util.List;
+
 @Dao
 public interface WasteBookDao {
     @Insert
@@ -35,7 +36,7 @@ public interface WasteBookDao {
 
     //搜索数据库，范围包括备注和类型
     @Query("SELECT * FROM WasteBook WHERE note LIKE :pattern or category LIKE :pattern ORDER BY ID DESC")
-    LiveData<List<WasteBook>>findWordsWithPattern(String pattern);
+    LiveData<List<WasteBook>> findWordsWithPattern(String pattern);
 
 //    @Query("SELECT * FROM WasteBook WHERE create_datetime between :a and :b")
 //    //@Query("select * from WasteBook where time between datetime(date(datetime('now',strftime('-%w day','now'))),' 1 second') and datetime(date(datetime('now',(6 - strftime('%w day','now'))||' day','1 day')),'-1 second')")

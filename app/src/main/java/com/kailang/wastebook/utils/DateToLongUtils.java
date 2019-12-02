@@ -1,7 +1,5 @@
 package com.kailang.wastebook.utils;
 
-import android.util.Log;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
