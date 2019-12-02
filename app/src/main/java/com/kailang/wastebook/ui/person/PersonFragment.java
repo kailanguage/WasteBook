@@ -5,9 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -29,7 +26,6 @@ import com.kailang.wastebook.data.Entity.WasteBook;
 import com.kailang.wastebook.login.LoginActivity;
 import com.kailang.wastebook.utils.DateToLongUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -47,6 +43,7 @@ public class PersonFragment extends Fragment {
     private String thisYear,thisMonth;
     private double yearTotal=0.0,monthTotal=0.0;
     private int y_b_shp,m_b_shp;
+    private static boolean yShow=true,mShow=true;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         personViewModel =
@@ -118,6 +115,36 @@ public class PersonFragment extends Fragment {
                         tv_year_budget_left.setText((y_b_shp-yearTotal)+"元");
                         tv_month_budget_left.setText((m_b_shp-monthTotal)+"元");
                     }
+
+                        if ((yearTotal / y_b_shp >= 0.8) && (yearTotal / y_b_shp <= 1)) {
+                            Toast.makeText(getContext(), "年预算使用已超80%", Toast.LENGTH_SHORT).show();
+                        }
+                        if ((yearTotal / y_b_shp >= 1)&&yShow) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                            builder.setTitle("警告")
+                                    .setMessage("已超出年预算，请计划经济")
+                                    .setNegativeButton(R.string.cancel, null);
+                            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    yShow=false;
+                                }
+                            }).show();
+                        }
+
+                        if ((monthTotal / m_b_shp >= 0.8) && (monthTotal / m_b_shp <= 1)) {
+                            Toast.makeText(getContext(), "月预算使用已超80%", Toast.LENGTH_SHORT).show();
+                        }
+                        if ((monthTotal / m_b_shp >= 1&&mShow)) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                            builder.setTitle("警告")
+                                    .setMessage("已超出月预算，请注意节俭")
+                                    .setNegativeButton(R.string.cancel, null);
+                            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mShow=false;
+                                }
+                            }).show();
+                        }
                 }
             }
         });
@@ -137,7 +164,7 @@ public class PersonFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 EditText input = new EditText(getActivity());
-                input.setText(et_year_budget_total.getText());
+                input.setText(et_year_budget_total.getText().toString().substring(0,et_year_budget_total.getText().toString().length()-1));
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("添加年预算").setView(input)
                         .setNegativeButton(R.string.cancel, null);
@@ -165,7 +192,7 @@ public class PersonFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 EditText input = new EditText(getActivity());
-                input.setText(et_month_budget_total.getText());
+                input.setText(et_month_budget_total.getText().toString().substring(0,et_month_budget_total.getText().toString().length()-1));
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("添加月预算").setView(input)
                         .setNegativeButton(R.string.cancel, null);
@@ -233,7 +260,7 @@ public class PersonFragment extends Fragment {
             cal.add(Calendar.DAY_OF_MONTH, -i);
             int a=random.nextInt(1000);
             WasteBook wasteBook =new WasteBook();
-            wasteBook.setType(a%4!=0);
+            wasteBook.setType(a%2!=0);
             setWasteBookIconName(wasteBook);
             wasteBook.setTime(cal.getTimeInMillis());
             wasteBook.setNote(note);
@@ -247,7 +274,7 @@ public class PersonFragment extends Fragment {
             cal.add(Calendar.MONTH, -i);
             int a=random.nextInt(1000);
             WasteBook wasteBook =new WasteBook();
-            wasteBook.setType(a%4!=0);
+            wasteBook.setType(a%5!=0);
             setWasteBookIconName(wasteBook);
             wasteBook.setTime(cal.getTimeInMillis());
             wasteBook.setNote(note);
@@ -261,7 +288,7 @@ public class PersonFragment extends Fragment {
             cal.add(Calendar.YEAR, -i);
             int a=random.nextInt(1000);
             WasteBook wasteBook =new WasteBook();
-            wasteBook.setType(a%4!=0);
+            wasteBook.setType(a%5!=0);
             setWasteBookIconName(wasteBook);
             wasteBook.setTime(cal.getTimeInMillis());
             wasteBook.setNote(note);
@@ -287,19 +314,5 @@ public class PersonFragment extends Fragment {
             }
         }
     }
-
-//    private String getCategoryIcon(boolean type){
-//        String categoryIcon = "ic_category_out_1";
-//        if(categoryList!=null){
-//            Random random = new Random();
-//            int a=random.nextInt(categoryList.size()-1);
-//            do{
-//                categoryIcon=categoryList.get(a).getIcon();
-//                Log.e("getCategoryIcon",categoryIcon);
-//                a=random.nextInt(categoryList.size()-1);
-//            }while (categoryList.get(a).isType()==type);
-//        }
-//        return categoryIcon;
-//    }
 
 }
