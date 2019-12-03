@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     //初始化category数据库
     private void initCategory() {
         isInitCategory=true;
-        String[] categoryINName={"搬砖","工资","奖金","卖房","其它"};
+        String[] categoryINName={"搬砖","工资","奖金","卖房","股票","资金","黄金","兼职","其它"};
         String[] categoryOUTName={"餐饮","购物","服饰","健身","交通","捐赠","社交","通信","房租","教育","医疗","生活","零食","旅行","水果","其它"};
         //支出
         for(int i=0;i<categoryOUTName.length;i++) {

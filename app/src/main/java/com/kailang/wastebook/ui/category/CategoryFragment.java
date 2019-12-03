@@ -312,7 +312,7 @@ public class CategoryFragment extends Fragment {
                                         category.setOrder(allCategories.size() + 1);
                                         category.setName(tmp);
                                         category.setType(false);
-                                        category.setIcon("ic_category_in_5");
+                                        category.setIcon("ic_category_in_10");
                                         try {
                                             categoryViewModel.insertCategory(category);
                                         } catch (Exception e) {
