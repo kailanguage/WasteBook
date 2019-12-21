@@ -1,11 +1,12 @@
-WasteBook
+WasteBook(软件工程实验 & 科研开发2)
 =========================
+软件模式MVVM
 ![](screenshots/mvvm.png)
 
 Introduction
 ------------
 ![](screenshots/000.png)
-
+![](screenshots/001.png)
 Screenshots
 -----------
 
