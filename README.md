@@ -1,4 +1,4 @@
-WasteBook(软件工程实验 & 科研开发2)
+WasteBook(科研开发项目)
 =========================
 软件模式MVVM
 ![](screenshots/mvvm.png)
